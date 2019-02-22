@@ -1,0 +1,10 @@
+{% load staticfiles %}
+<script>
+    var textarea = document.getElementById('id_content');
+    sceditor.create(textarea, {
+        format: 'xhtml',
+        style: "{% static 'mainpage/css/content/default.min.css'%}",
+        width: "100%",
+        height: "500px"
+    });
+</script>

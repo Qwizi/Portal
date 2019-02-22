@@ -1,0 +1,44 @@
+{% load bans_length %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="text-center text-light">Lista banów</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table dark-table table-dark table-striped table-hover" style="cursor: pointer">
+                <thead>
+                    <th scope="col">SERWER</th>
+                    <th scope="col">DATA</th>
+                    <th scope="col">NICK</th>
+                    <th scope="col">CZAS BANA</th>
+                    <th scope="col">POWÓD</th>
+                </thead>
+                <tbody>
+                    {% for ban in bans %}
+                        <tr>
+                            <td>{{ ban.sid }}</td>
+                            <td>{{ ban.created|date:"d-m-y H:i" }}</td>
+                            <td>{{ ban.name }}</td>
+                            <td>{{ ban.length|minutes }}</td>
+                            <td>{{ ban.reason }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        {% include 'pagination.html' %}
+    </div>
+    <div class="col-md-4">
+        {% include 'sourcebans/search_form.html' %}
+    </div>
+</div>
+</div>
+{% include 'sourcebans/modal.html' %}

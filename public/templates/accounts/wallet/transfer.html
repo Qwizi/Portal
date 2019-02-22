@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Porfel{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %} {% include "messages.html" %} {% endif %}
+                <div class="card light-bg">
+                    <div class="card-header blue-bg">
+                        {% include "accounts/nav.html" %}
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Przekaż środki użytkownikowi</h1>
+                        <div class="alert alert-primary" role="alert">
+                            <p class="text-center">Przekaz środków obarczony jest opłatą w wysokości 5% przekazywanej kwoty</p>
+                        </div>
+                        <form action="{% url 'accounts:wallet-transfer' %}" method="post">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <button class="btn btn-success" type="submit">Przekaż</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

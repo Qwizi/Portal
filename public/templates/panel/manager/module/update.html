@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Panel opiekuna{% endblock title %} {% block content %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "panel/manager/nav.html" %}
+			<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+				<form
+					action="{% url 'panel:manager-module-update' server_tag=server_tag module_tag=module_tag pk=7%}"
+					method="post"
+				>
+					{% csrf_token %} {{ form }} <button class="btn btn-success" type="submit">Edytuj</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

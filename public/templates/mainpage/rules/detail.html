@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Regulaminy{% endblock title %}
+{% block content %}
+{% comment %}
+<section>
+        <article>
+            <div class="container inner">
+                <div class="post">
+                    <div class="row">
+                        <div class="mx-auto">
+                            <h1>{{rule.server}}</h1>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="{%url 'mainpage:rules'%}" class="btn btn-primary btn-block">Powrót</a>
+                        </div>
+                        {% if perms.mainpage.change_rules %}
+                        <div class="col-md-2">
+                            <a href="{%url 'mainpage:rules-update' pk=rule.pk%}" class="btn btn-primary btn-block">Edytuj</a>
+                        </div>
+                        {% endif %}
+                        {% if perms.mainpage.delete_rules %}
+                        <div class="col-md-2">
+                            <a href="{%url 'mainpage:rules-delete' pk=rule.pk%}" class="btn btn-primary btn-block">Usuń</a>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-10 mx-auto">
+                            {{rule.content|safe}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+{% endcomment %}
+<section>
+    <div class="container inner">
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %} {% include "messages.html" %} {% endif %}
+                <div class="card light-bg">
+                    <div class="card-header blue-bg">
+                        Regulamin - {{rule.server}}
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title text-center">Regulamin - {{rule.server}}</h1>
+                        {{rule.content|safe}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Regulaminy{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <h2>Edytuj regulamin serwera - {{object.server.name}}</h2>
+        <div class="row post">
+            <div class="class-col-md-12">
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="id_content">Treść regulaminu</label>
+                    <div class="form-group">
+                        {{ form.content }}
+                    </div>
+                    <label for="id_server">Serwer</label>
+                    <div class="form-group">
+                        {{ form.server }}
+                    </div>
+                    <label for="id_server">Jest aktywny?</label>
+                    <div class="form-group">
+                        {{ form.is_active }}
+                    </div>
+                    <a href="{% url 'mainpage:rules' %}" class="btn btn-primary">Cofnij</a>
+                    <a href="{% url 'mainpage:rules-delete' server=rule.server.tag pk=rule.pk%}" class="btn btn-danger">Usuń</a>
+                    <input class="btn btn-success" type="submit" value="Zapisz">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+{% include "mainpage/rules/editor.html" %}
+{% endblock %}

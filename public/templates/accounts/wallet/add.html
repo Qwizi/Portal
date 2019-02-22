@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block title %}Portfel{% endblock title %} {% block content %} {%comment%}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "accounts/nav.html" %}
+			<div class="col-md-12">
+				<div class="post mx-auto">
+					{% if payment == 'sms'%}
+					<h1 class="text-center">Doładowywanie portfela na kwote {{ sms.value }} zł</h1>
+					<h4 class="text-center">
+						Aby doładować swój portfel wyślij SMS <br />treść: <strong>TC.LIVS.645</strong>
+						<br />numer: <strong>{{ sms.number }}</strong> <br />koszt:
+						<strong>{{ sms.vat }} zł</strong>
+					</h4>
+					<form action="{% url 'accounts:wallet-success' payment='sms' %}" method="post">
+						<div class="form-group">
+							<label for="code">Kod zwrotny</label>
+							<input
+								class="form-control"
+								id="code"
+								name="code"
+								placeholder="Wpisz tutaj kod zwrotny"
+							/>
+						</div>
+						{% csrf_token %}
+						<button class="btn btn-primary">Doładuj</button>
+					</form>
+					{%elif payment == 'przelew'%}
+					<form action="{% url 'accounts:wallet-success' payment='przelew' %}" method="post">
+						<div class="form-group">
+							<label for="code">Kod zwrotny</label>
+							<input
+								class="form-control"
+								id="code"
+								name="code"
+								placeholder="Wpisz tutaj kod zwrotny"
+							/>
+						</div>
+						{% csrf_token %}
+						<button class="btn btn-primary">Doładuj</button>
+					</form>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endcomment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						{% include "accounts/nav.html" %}
+					</div>
+					<div class="card-body text-center">
+						{% if payment == 'sms' %}
+						<h2 class="card-title">Doładowywanie portfela na kwote {{ sms.value }}</h2>
+						Aby doładować swój portfel wyślij SMS <br />treść: <strong>TC.LIVS.645</strong>
+						<br />numer: <strong>{{ sms.number }}</strong> <br />koszt:
+						<strong>{{ sms.vat }} zł</strong>
+						<form action="{% url 'accounts:wallet-success' payment='sms' %}" method="post">
+							<div class="form-group">
+								<label for="code">Kod zwrotny</label>
+								<input
+									class="form-control"
+									id="code"
+									name="code"
+									placeholder="Wpisz tutaj kod zwrotny"
+								/>
+							</div>
+							{% csrf_token %}
+							<button class="btn btn-primary">Doładuj</button>
+						</form>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

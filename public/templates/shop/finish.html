@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block title %}Sklep 24/7{% endblock title %}
+{% block content %}
+<section>
+	<div class="container inner">
+		<div class="row post">
+			<div class="col-md-12"><h1>Finalizacja zakupu</h1></div>
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table dark-table table-dark table-striped">
+						<thead>
+							<th>Nick</th>
+							<th>Steamid 32</th>
+							<th>Serwer</th>
+							<th>Usługa</th>
+							<th>Ilość dni</th>
+							<th>Koszt</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ user.get_username }}</td>
+								<td>{{ user.steamid32 }}</td>
+								<td>{{ server }}</td>
+								<td>{{ service.bonus.name }}</td>
+								<td>{{ service.days }}</td>
+								<td>{{ service.price.value }} zł</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<form action="{% url 'shop:finish' service_tag=service.bonus.tag service_days=service.days server_tag=server_tag %}" method="post">
+					{% csrf_token %} {{ form }} <button class="btn btn-success" type="submit">Kupuje</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

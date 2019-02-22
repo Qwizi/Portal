@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Centrum użytkownika{% endblock title %} {% block content%}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "user_centrum/nav.html" %}
+			<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+				<h1 class="text-center">Lista usług</h1>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="table-responsive">
+									<table class="table table-filter dark-table table-dark table-striped">
+										<thead>
+											<th>Steamid32</th>
+											<th>Serwer</th>
+											<th>Usługa</th>
+											<th>Ilosc dni</th>
+											<th>Wygasnie</th>
+											<th>Opcje</th>
+										</thead>
+										<tbody>
+											{% for premium in data_with_paginate %}
+											<tr>
+												<td>{{ premium.nick }}</td>
+												<td>{{ premium.server }}</td>
+												<td>{{ premium.service.bonus.name }}</td>
+												<td>{{ premium.service.days }}</td>
+												<td>{{ premium.time }}</td>
+												<td>Edytuj / Usun</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{% if perms.user_centrum.add_application %}
+						<a href="{% url 'shop:create' %}" class="btn btn-success float-right">Napisz podanie</a>
+						{% endif %}
+					</div>
+					{% include "pagination.html" %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load servers %}
+{% load bans_length %}
+{% load staticfiles %}
+{% block title %}Sieć serwerów Team Fortress 2{% endblock title %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<section id="shark" class="dark-bg">
+    <div class="container inner">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center text-light"><i class="fas fa-gem"></i> Sklep</h2>
+                <p class="text-center text-muted">Bonusy</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pricing card-deck flex-column flex-md-row mb-3 mx-auto">
+                {% for service in bonus_list %}
+                <div class="card light-bg {% if service.days == 30 and service.bonus.tag == 'shark' %} popular {% endif %}card-pricing text-center px-3 mb-4" >
+                        <span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm"
+                            >{{ service.bonus.name }}</span
+                        >
+                        <div class="bg-transparent card-header pt-4 border-0">
+                            <h2 class="h2 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">
+                                <span class="price">{{ service.price }} zł</span><span class="h6 text-muted ml-2">/ na {{service.days}} dni</span>
+                            </h2>
+                        </div>
+                        <div class="card-body pt-0">
+                            <ul class="list-unstyled mb-4">
+                                {{ service.bonus.description|safe}}
+                            </ul>
+                            <a href="{% url 'shop:service' service_tag=service.bonus.tag service_days=service.days%}" class="btn btn-outline-primary mb-3">Kup teraz</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center" style="margin-top: 10px;">
+                <a href="/sklep/" class="btn btn-info btn-lg">Przejdź do sklepu</a>
+            </div>
+        </div>        
+    </div>
+</section>
+
+{% comment %}
+<section id="serwery" class="light-bg">
+    <div class="container inner">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center text-light"><i class="fas fa-server"></i> Serwery</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for server in server_list %}
+            <div class="col-md-{% if server_list.count > 3 %}3{% else %}4{% endif %}">
+                <div class="card dark-bg" >
+                    <img class="card-img-top" src="{{ server.banner.url }}" alt="Card image cap">
+                    <div class="card-body text-center">
+                        <div class="card-text">
+                            <p>IP: {{ server.ip }}:{{server.port}}</p>
+                            <p>Graczy: {% get_server_info server.ip server.port|add:0 type="players" %} / {% get_server_info server.ip server.port|add:0 type="max_players" %}</p>
+                            <p>Mapa: {% get_server_info server.ip server.port|add:0 type="map" %}</p>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="steam://connect/{{ server.ip }}" class="btn btn-success d-block justify-content-center">Dołącz</a>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px">
+                            <div class="col-md-12">
+                                <a href="https://www.gametracker.com/server_info/{{ server.ip }}:{{ server.port }}" class="btn btn-danger d-block justify-content-center">GameTracker</a>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px">
+                            <div class="col-md-12">
+                                <a href="{%url 'mainpage:rules-detail' pk=server.pk%}" class="btn btn-info d-block justify-content-center">Regulamin</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endcomment %}
+<section class="light-bg">
+    <div class="container inner">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2><i class="fas fa-server"></i> Serwery</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="table-responsive">
+                    <table class="table dark-table table-dark table-striped">
+                        <thead>
+                            <th>Nazwa</th>
+                            <th>Banner</th>
+                            <th>IP</th>
+                            <th>Gracze</th>
+                            <th>Regulamin</th>
+                        </thead>
+                        <tbody>
+                            {% for server in server_list %}
+                            <tr>
+                                <td>{{server.name}}</td>
+                                <td><img src="https://cache.gametracker.com/server_info/{{server.ip}}:{{server.port}}/b_350_20_329FCF_122D4E_FFFFFF_000000.png"></td>
+                                <td>{{server.ip}}:{{server.port}}</td>
+                                <td>{% get_server_info server.ip server.port|add:0 type="players" %} / {% get_server_info server.ip server.port|add:0 type="max_players" %}</td>
+                                <td><a class="btn btn-success" href="{%url 'mainpage:rules-detail' pk=server.pk%}">Regulamin</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="centrum" class="dark-bg">
+    <div class="container inner">
+        <div class="row" >
+            <div class="col-md-12">
+                <h2 class="text-center text-light"><i class="fas fa-user"></i> Centrum użytkownika</h2>
+                <p class="text-center text-muted">Podania, skargi, odwołania od bana</p>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center">
+                <a href="{% url 'centrum:index' %}" class="btn btn-info btn-lg">Przejdź do centrum</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="bans" class="light-bg">
+    <div class="container inner">
+        <div class="row" >
+            <div class="col-md-12">
+                <h2 class="text-center text-light"><i class="fas fa-ban"></i> Ostatnie bany</h2>
+            </div>
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    {% if ban_list %}
+                    
+                    <table class="table dark-table table-dark table-striped">
+                        <thead>
+                            <th scope="col">SERWER</th>
+                            <th scope="col">DATA</th>
+                            <th scope="col">NICK</th>
+                            <th scope="col">CZAS BANA</th>
+                            <th scope="col">POWOD</th>
+                        </thead>
+                        <tbody>
+                            {% for ban in ban_list %}
+                                <tr>
+                                    <td>{{ ban.sid }}</td>
+                                    <td>{{ ban.created|date:"d-m-y H:i" }}</td>
+                                    <td>{{ ban.name }}</td>
+                                    <td>{{ ban.length|minutes }}</td>
+                                    <td>{{ ban.reason }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <h3 class="text-center">Brak banów</h3>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center" style="margin-top: 10px;">
+                <a href="{% url 'bans:index' %}" class="btn btn-info btn-lg btn-block">Zobacz więcej</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="partners" class="dark-bg">
+    <div class="container inner">
+        <div class="row" >
+            <div class="col-md-12">
+                <h2 class="text-center text-light"><i class="fas fa-handshake"></i> Partnerzy</h2>
+            </div>
+            <div class="col-md-12 text-center">
+                <a href="https://liveserver.pl"><img src="{% static 'mainpage/img/banners/liveserver.png' %}" class=""></a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

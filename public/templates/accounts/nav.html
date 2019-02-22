@@ -1,0 +1,43 @@
+<!-- <div class="col-md-12">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            {% url 'accounts:index' as url %}
+            <a href="{{ url }}"{% if request.path == url %} class="nav-link active" {% else %} class="nav-link"{% endif %}>Konto</a>
+        </li>
+        <li class="nav-item dropdown">
+            {% url 'accounts:wallet-index' as url %}
+            {% url 'accounts:wallet-transfer' as url2 %}
+            {% url 'accounts:wallet-payment-history' as url3 %}
+            <a {% if request.path == url or request.path == url2  or request.path == url3 %} class="nav-link active dropdown-toggle" {% else %} class="nav-link dropdown-toggle"{% endif %} data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Portfel</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ url }}">Dostępne środki</a>
+                <a class="dropdown-item" href="{{ url2 }}">Transfer pieniędzy</a>
+                <a class="dropdown-item" href="{{ url3 }}">Historia</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            {% url 'accounts:myshopping' as url %}
+            <a href="{{ url }}"{% if request.path == url %} class="nav-link active" {% else %} class="nav-link"{% endif %}>Moje zakupy</a>
+        </li>
+</div> -->
+<ul class="nav nav-pills card-header-pills">
+    <li class="nav-item">
+        {% url 'accounts:index' as url %}
+        <a href="{{ url }}"{% if request.path == url %} class="nav-link active" {% else %} class="nav-link"{% endif %}>Konto</a>
+    </li>
+    <li class="nav-item dropdown">
+        {% url 'accounts:wallet-index' as url %}
+        {% url 'accounts:wallet-transfer' as url2 %}
+        {% url 'accounts:wallet-payment-history' as url3 %}
+        <a {% if request.path == url or request.path == url2  or request.path == url3 %} class="nav-link active dropdown-toggle" {% else %} class="nav-link dropdown-toggle"{% endif %} data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Portfel</a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ url }}">Dostępne środki</a>
+            <a class="dropdown-item" href="{{ url2 }}">Transfer pieniędzy</a>
+            <a class="dropdown-item" href="{{ url3 }}">Historia</a>
+        </div>
+    </li>
+    <li class="nav-item">
+        {% url 'accounts:myshopping' as url %}
+        <a href="{{ url }}"{% if request.path == url %} class="nav-link active" {% else %} class="nav-link"{% endif %}>Moje zakupy</a>
+    </li>
+</ul>

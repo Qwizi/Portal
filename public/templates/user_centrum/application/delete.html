@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Centrum użytkownika{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <div class="row">
+            {% include "user_centrum/nav.html" %}
+            <div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+                <h3 class="text-center">Usun podanie</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="post">
+                            {% csrf_token %}
+                            Czy napewno chcesz usunąc Podanie na {{object.type}}a - {{ object.owner.username }} - {{ object.server }}
+                            <button type="submit" class="btn btn-success">Usun</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

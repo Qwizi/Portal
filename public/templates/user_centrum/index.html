@@ -1,0 +1,104 @@
+{% extends "base.html" %} {% block title %}Centrum użytkownika{% endblock title %} 
+{% block content%} 
+{% comment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "user_centrum/nav.html" %}
+			<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+				<h3 class="text-center">Centrum użytkownika</h3>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="card light-bg">
+							<div class="card-header blue-bg text-center"><h3>Podania</h3></div>
+							<div class="card-body text-center">
+								<p>
+									<a
+										href="{% url 'centrum:application-list' %}"
+										class="btn btn-success d-block justify-content-center"
+										>Przejdź</a
+									>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card light-bg">
+							<div class="card-header blue-bg text-center"><h3>Skargi</h3></div>
+							<div class="card-body text-center">
+								<p>
+									<a href="" class="btn btn-success d-block justify-content-center">Przejdź</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="card light-bg">
+							<div class="card-header blue-bg text-center"><h3>Odwołania od bana</h3></div>
+							<div class="card-body text-center">
+								<p>
+									<a href="" class="btn btn-success d-block justify-content-center">Przejdź</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endcomment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						Centrum użytkownika
+					</div>
+					<div class="card-body text-center">
+						<h1 class="card-title">Centrum użytkownika</h1>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="card light-bg">
+									<div class="card-header blue-bg text-center"><h3>Podania</h3></div>
+									<div class="card-body text-center">
+										<p>
+											<a
+												href="{% url 'centrum:application-list' %}"
+												class="btn btn-success d-block justify-content-center"
+												>Przejdź</a
+											>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="card light-bg">
+									<div class="card-header blue-bg text-center"><h3>Skargi</h3></div>
+									<div class="card-body text-center">
+										<p>
+											<a href="" class="btn btn-success d-block justify-content-center">Przejdź</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="card light-bg">
+									<div class="card-header blue-bg text-center"><h3>Odwołania od bana</h3></div>
+									<div class="card-body text-center">
+										<p>
+											<a href="" class="btn btn-success d-block justify-content-center">Przejdź</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

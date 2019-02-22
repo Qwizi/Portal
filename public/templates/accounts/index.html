@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %}Panel użytkownika{% endblock title %} {% block content %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						{% include "accounts/nav.html" %}
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Podsumowanie</h5>
+						<p>
+							Nick: <span style="{{ user.display_group.login_format }}">{{ user.username }}</span>
+						</p>
+						<p>Steamid64: {{ user.steamid64 }}</p>
+						<p>Steamid32: {{ user.steamid32 }}</p>
+						<p>E-mail: {{ user.email }}</p>
+						<p>Grupa:<span style="{{ user.display_group.login_format }}">{{user.display_group.name}}</span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

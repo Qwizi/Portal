@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block title %}Regulaminy{% endblock title %} 
+{% block content %} 
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						Regulaminy
+					</div>
+					<div class="card-body text-center">
+						<h1 class="card-title">Regulaminy</h1>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="table-container dark-table table-dark">
+									<table class="table table-filter dark-table table-dark table-striped">
+										<thead>
+											<tr>
+												<th>Regulaminy</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% if rule_list %} {% for rule in rule_list %}
+											<tr>
+												<td>
+													<div class="media-body">
+														<h4 class="title">
+															<a href="{% url 'mainpage:rules-detail' pk=rule.pk %}">
+																Regulamin {{ rule.server.name }}
+															</a>
+														</h4>
+													</div>
+												</td>
+											</tr>
+											{% endfor %} {% else %}
+											<tr>
+												<td>
+													<div class="media">
+														<div class="media-body text-center">Brak regulaminów</div>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+										{% endif %}
+									</table>
+								</div>
+							</div>
+						</div>
+						{% if perms.user_centrum.add_rules %}
+						<a href="{% url 'mainpage:rules-add' %}" class="btn btn-success float-right"
+							>Dodaj regulamin</a
+						>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

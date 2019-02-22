@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bans_length %}
+{% block title %}Lista banów{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <div class="col-md-12 mx-auto post">
+            <h1 class="text-center">Lista banów</h1>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table dark-table table-dark table-striped table-hover" style="cursor: pointer">
+                        <thead>
+                            <th scope="col">SERWER</th>
+                            <th scope="col">DATA</th>
+                            <th scope="col">NICK</th>
+                            <th scope="col">CZAS BANA</th>
+                            <th scope="col">POWÓD</th>
+                        </thead>
+                        <tbody>
+                            {% for ban in data_with_paginate %}
+                                <tr>
+                                    <td>{{ ban.sid }}</td>
+                                    <td>{{ ban.created|date:"d-m-y H:i" }}</td>
+                                    <td>{{ ban.name }}</td>
+                                    <td>{{ ban.length|minutes }}</td>
+                                    <td>{{ ban.reason }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-8">
+                    {% include 'pagination.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

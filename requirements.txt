@@ -1,0 +1,11 @@
+Django>=2.1
+djangorestframework>=3.9.0
+django-digg-paginator>=0.1.3
+requests
+django-steamauth
+django-unixdatetimefield
+pytz
+pylint-django
+pymysql
+Pillow
+steamquery

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}FAQ{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <h1 class="text-center">FAQ</h1>
+        <div class="row">
+            <div class="col-md-12">
+                {% for faq in faq_list %}
+                    <div class="card light-bg">
+                        <div class="card-header blue-bg"><h3>{{ faq.question }}</h3></div>
+                        <div class="card-body"><p>{{ faq.answer }}</p></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>    
+</section>
+{% endblock content %}

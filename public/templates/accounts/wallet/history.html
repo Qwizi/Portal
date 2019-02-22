@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% load float %} {% block title %}Portfel{% endblock title %} 
+{% block content %} {% comment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+			</div>
+			{% include "accounts/nav.html" %}
+			<div class="col-md-12">
+				<div class="post mx-auto">
+					<h1 class="text-center">Historia</h1>
+					<div class="table-responsive">
+						<table class="table dark-table table-dark table-striped table-hover">
+							<thead>
+								<th>Zmiana</th>
+								<th>Opis</th>
+								<th>Użytkownik</th>
+								<th>Typ</th>
+								<th>Data</th>
+							</thead>
+							<tbody>
+								{% for history in data_with_paginate %}
+								<tr>
+									<td>{{ history.change }}</td>
+									<td>{{ history.description }}</td>
+									<td>{{ history.target }}</td>
+									<td>{{ history.type }}</td>
+									<td>{{ history.date }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% include "pagination.html" %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endcomment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						{% include "accounts/nav.html" %}
+					</div>
+					<div class="card-body text-center">
+						<h1 class="card-title">Historia</h1>
+						<div class="table-responsive">
+							<table class="table dark-table table-dark table-striped table-hover">
+								<thead>
+									<th>Zmiana</th>
+									<th>Opis</th>
+									<th>Użytkownik</th>
+									<th>Typ</th>
+									<th>Data</th>
+								</thead>
+								<tbody>
+									{% if data_with_paginate %} {% for history in data_with_paginate %}
+									<tr>
+										<td>{{ history.change }}</td>
+										<td>{{ history.description }}</td>
+										<td>{{ history.target }}</td>
+										<td>{{ history.type }}</td>
+										<td>{{ history.date }}</td>
+									</tr>
+									{% endfor %} {% else %}
+									<tr>
+										<td class="text-center" colspan="100">Brak</td>
+									</tr>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+						{% include "pagination.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

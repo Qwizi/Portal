@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Aktualnosci{% endblock title %}
+{% block content %}
+<section>
+    <article>
+        <div class="container-fluid inner">
+            <div class="post">
+                <div class="row">
+                    <div class="col-md-10 mx-auto">
+                        {{new.content|safe}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block title %}Panel opiekuna{% endblock title %} {% block content %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "panel/manager/nav.html" %}
+			<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+				<form
+					action="{% url 'panel:manager-module-add' server_tag=server_tag module_tag=module_tag %}"
+					method="post"
+				>
+					{{ form.as_p }} {% csrf_token %}
+					<button class="btn btn-success" type="submit">Stworz</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

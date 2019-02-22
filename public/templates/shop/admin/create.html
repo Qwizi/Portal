@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %}Sklep24/7{% endblock title %} {% block content%}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "user_centrum/nav.html" %}
+			<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+				<h3 class="text-center">Dodaj usługę</h3>
+				<div class="row">
+					<div class="col-md-12">
+						<form method="post">
+							{% csrf_token %} {{ form.as_p }}
+							<div class="btn-group" role="group" aria-label="Narzędzia">
+								<a href="{% url 'centrum:application-list' %}" class="btn btn-primary">Cofnij</a>
+								<button type="submit" class="btn btn-success">Dodaj</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}

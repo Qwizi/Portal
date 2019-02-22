@@ -1,0 +1,46 @@
+{% load admins_groups %}
+<h1 class="text-center">Administracja</h1>
+<div class="row">
+	<div class="table-responsive">
+		<table class="table dark-table table-dark">
+			<thead>
+				<th>Typ</th>
+				<th>SteamID</th>
+				<th>Nazwa</th>
+				<th>Flagi</th>
+				<td>Immunitet</td>
+				<td>Grupa</td>
+			<tbody>
+				{% for module in data_with_paginate %}
+				<tr>
+					<td>{{ module.authtype }}</td>
+					<td>{{ module.identity }}</td>
+					<td>{{ module.name }}</td>
+					<td>{{ module.flags }}</td>
+					<td>{{ module.immunity }}</td>
+					<td>{% get_admingroups_name server_tag module.groups %}</td>
+					<td>
+						<a
+							class="btn btn-primary btn-sm"
+							href="{% url 'panel:manager-module-update' server_tag=server_tag module_tag=module_tag pk=module.id %}"
+							>Edytuj</a
+						>
+						<a
+							class="btn btn-danger btn-sm"
+							href="{% url 'panel:manager-module-delete' server_tag=server_tag module_tag=module_tag pk=module.id%}"
+							>Usuń</a
+						>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row float-right">
+	<a
+		class="btn btn-success"
+		href="{% url 'panel:manager-module-add' server_tag=server_tag module_tag=module_tag %}"
+		>Dodaj</a
+	>
+</div>

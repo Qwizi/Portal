@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Regulaminy{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <h2>Dodaj regulamin serwera</h2>
+        <div class="row post">
+            <form method="post">
+                {% csrf_token %}
+                <label for="id_content">Treść regulaminu</label>
+                <div class="form-group">
+                    {{ form.content }}
+                </div>
+                <label for="id_server">Serwer</label>
+                <div class="form-group">
+                    {{ form.server }}
+                </div>
+                <a href="{% url 'mainpage:rules' %}" class="btn btn-primary">Cofnij</a>
+                <input class="btn btn-success" type="submit" value="Dodaj">
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+{% include "mainpage/rules/editor.html" %}
+{% endblock %}

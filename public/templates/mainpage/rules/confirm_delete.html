@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Regulaminy{% endblock title %}
+{% block content %}
+<section>
+    <div class="container inner">
+        <h2>Edytuj regulamin serwera - {{object.server.name}}</h2>
+        <div class="row post">
+            <div class="class-col-md-12">
+                <form method="post">{% csrf_token %}
+                    <p>Are you sure you want to delete "{{ object }}"?</p>
+                    <input type="submit" value="Confirm">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

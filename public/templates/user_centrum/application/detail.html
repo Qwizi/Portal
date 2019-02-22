@@ -1,0 +1,163 @@
+{% extends "base.html" %} {% block title %}Podania - Centrum użytkownika{% endblock title %} 
+{% load staticfiles %} 
+{% block content %}
+{% comment %}
+<!-- <section>
+		<div class="container inner">
+			<div class="row">
+				{% include "user_centrum/nav.html" %}
+				<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+					<div class="row">
+						<div class="col-md-12">
+							<h1 class="text-center">
+								Podanie na {{ application.type }}a - {{ application.owner.username }} -
+								{{ application.server }}
+							</h1>
+						</div>
+						<div class="col-md-6">
+							<div class="card light-bg" style="height: 100%">
+								<div class="card-header blue-bg">Infromacje podstawowe</div>
+								<div class="card-body">
+									<img src="{{ application.owner.avatar_medium }}" />
+									<p>Nick: {{ application.owner.username }}</p>
+									<p>
+										Steamid 32:
+										<a href="http://steamcommunity.com/profiles/{{ application.owner.steamid64 }}">{{
+											application.owner.steamid32
+										}}</a>
+									</p>
+									<p>Imię: {{ application.name }}</p>
+									<p>Wiek: {{ application.age }}</p>
+									<p>Znajomość komend SourceMod: {{ application.age }}</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card light-bg" style="height: 100%">
+								<div class="card-header blue-bg">Infromacje dodatkowe</div>
+								<div class="card-body">
+									<p>Serwer: {{ application.server }}</p>
+									<p>Mikrofon: {{ application.have_micro }}</p>
+									<p>Blokada VAC: {{ vac }}</p>
+									<p>Ilość przegranych godzin w TF2: {{ hours }}</p>
+									<p>Ilość banów: {{ bans }}</p>
+									<p>Ilość blokad komunikacji: {{ cbans }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card light-bg">
+								<div class="card-header blue-bg">Powód</div>
+								<div class="card-body">{{ application.reason }}</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card light-bg">
+								<div class="card-header blue-bg">Doświadczenie</div>
+								<div class="card-body">{{ application.reason }}</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card light-bg">
+								<div class="card-header blue-bg">Pytania rekrutacyjne</div>
+								<div class="card-body">{{ application.reason }}</div>
+							</div>
+						</div>
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-6">
+							<div class="btn-group" role="group">
+								<a href="{% url 'centrum:application-list'%}" class="btn btn-secondary">Cofnij</a> {% if perms.user_centrum.change_application %}
+								<a
+									href="{% url 'centrum:application-update' pk=application.pk%}"
+									class="btn btn-primary"
+									>Edytuj</a
+								>
+								{% endif %} 
+								{% if perms.user_centrum.delete_application %}
+								<a
+									href="{% url 'centrum:application-delete' pk=application.pk%}"
+									class="btn btn-danger"
+									>Usuń</a
+								>
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="btn-group float-right" role="group">
+								{% if perms.user_centrum.accept_application %}
+								<a
+									href="{% url 'centrum:application-accept' pk=application.pk%}"
+									class="btn btn-success"
+									>Akceptuj</a
+								>
+								{% endif %} 
+								{% if perms.user_centrum.cancel_application %}
+								<a
+									href="{% url 'centrum:application-cancel' pk=application.pk%}"
+									class="btn btn-danger"
+									>Odrzuć</a
+								>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section> -->
+{% endcomment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						Podanie na {{application.type}}a - {{application.owner.username}} - {{application.server}}
+					</div>
+					<div class="card-body">
+						<h1 class="card-title text-center">Podanie na {{application.type}}a - {{application.owner.username}} - {{application.server}}</h1>
+						<div class="row">
+							<div class="col-md-8">
+								<div class="card dark-bg" style="height: 100%">
+									<div class="card-header bg-success">Infromacje podstawowe</div>
+									<div class="card-body">
+										<img src="{{ application.owner.avatar_medium }}" />
+										<p>Nick: {{ application.owner.username }}</p>
+										<p>Steamid 32:<a href="http://steamcommunity.com/profiles/{{ application.owner.steamid64 }}">{{application.owner.steamid32}}</a></p>
+										<p>Imię: {{ application.name }}</p>
+										<p>Wiek: {{ application.age }}</p>
+										<p>Znajomość komend SourceMod: {{ application.age }}</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="card dark-bg" style="height: 100%">
+									<div class="card-header bg-primary">Infromacje dodatkowe</div>
+									<div class="card-body">
+										<p>Serwer: {{ application.server }}</p>
+										<p>Mikrofon: {{ application.have_micro }}</p>
+										<p>Blokada VAC: {{ vac }}</p>
+										<p>Ilość przegranych godzin w TF2: {{ hours }}</p>
+										<p>Ilość banów: {{ bans }}</p>
+										<p>Ilość blokad komunikacji: {{ cbans }}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %} 
+

@@ -1,0 +1,256 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+			integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="{% static 'mainpage/css/base.css' %}" />
+		<link rel="stylesheet" href="{% static 'mainpage/css/preloader.css' %}" />
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+			integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+			crossorigin="anonymous"
+		/>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+		<link rel="stylesheet" href="{% static 'mainpage/css/defaultdark.min.css' %}" />
+		{% block styles %}{% endblock%}
+		<title>{% block title %}{% endblock %} - SharkServers.pl</title>
+	</head>
+
+	<body>
+		<main>
+			<header>
+				<nav id="navbar-example2" class="navbar navbar-expand-lg navbar-dark custom-bg">
+					<a class="navbar-brand" href="/">SharkServers.pl</a>
+					<button
+						class="navbar-toggler"
+						type="button"
+						data-toggle="collapse"
+						data-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent"
+						aria-expanded="false"
+						aria-label="Toggle navigation"
+					>
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item">
+								<a href="{% url 'mainpage:home' %}" class="nav-link text-light">Strona Główna</a>
+							</li>
+							<li class="nav-item">
+								<a href="https://forum.sharkservers.pl" class="nav-link text-light">Forum</a>
+							</li>
+							<li class="nav-item">
+								<a href="/#serwery" class="nav-link text-light">Serwery</a>
+							</li>
+							<li class="nav-item">
+								<a href="{% url 'centrum:index' %}" class="nav-link text-light"
+									>Centrum użytkownika</a
+								>
+							</li>
+							<li class="nav-item">
+								<a href="{% url 'bans:index' %}" class="nav-link text-light">Bany</a>
+							</li>
+							<li class="nav-item">
+								<a href="{% url 'shop:index' %}" class="nav-link text-light">Sklep</a>
+							</li>
+						</ul>
+
+						{% if not user.is_authenticated %}
+						<a href="{% url 'mainpage:login' %}" class="navbar-text text-light"
+							><img
+								src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png"
+								alt="Steam login button"
+						/></a>
+						{% else %}
+						<a href="profil" class="nav-linl"><img class="img-fluid" src="{{ user.avatar }}"/></a>
+						<a href="{% url 'accounts:wallet-index' %}" class="nav-link"
+							><span class="badge bg-primary">{{ user.get_cash }}</span></a
+						>
+						<a
+							href="#"
+							role="button"
+							class="btn btn-secondary dropdown-toggle btn-sm"
+							data-toggle="dropdown"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							Opcje
+						</a>
+
+						<div class="dropdown-menu dropdown-menu-right">
+							<a class="dropdown-item" href="{% url 'accounts:index' %}">Konto</a>
+							<a class="dropdown-item" href="#">Profil</a>
+							<a class="dropdown-item" href="{% url 'accounts:wallet-index' %}">Portfel</a>
+							<div class="dropdown-divider"></div>
+							{% if user.is_staff %}
+							<a class="dropdown-item" href="/admin/">ACP</a>
+							<a class="dropdown-item" href="{% url 'panel:manager-index' %}">GCP</a>
+							{% endif %}
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{%url 'mainpage:logout' %}">Wyloguj się</a>
+						</div>
+						{% endif %}
+					</div>
+				</nav>
+			</header>
+			<article class="content">
+				{% comment %}
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators">
+						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						<li data-target="#myCarousel" data-slide-to="1"></li>
+						<li data-target="#myCarousel" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img
+								class="first-slide"
+								src="https://www.articque.com/wp-content/themes/articque/images/backgrounds/header/art-header-main/full/city_art-header-main.gif"
+								alt="First slide"
+							/>
+							<div class="container">
+								<div class="carousel-caption">
+									<h1>Example headline.</h1>
+									<p>
+										Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non
+										mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id
+										elit.
+									</p>
+									<p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+								</div>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<img
+								class="second-slide"
+								src="https://www.articque.com/wp-content/themes/articque/images/backgrounds/header/art-header-main/full/city_art-header-main.gif"
+								alt="Second slide"
+							/>
+							<div class="container">
+								<div class="carousel-caption">
+									<h1>Another example headline.</h1>
+									<p>
+										Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non
+										mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id
+										elit.
+									</p>
+									<p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+								</div>
+							</div>
+						</div>
+						<div class="carousel-item">
+							<img
+								class="third-slide"
+								src="https://www.articque.com/wp-content/themes/articque/images/backgrounds/header/art-header-main/full/city_art-header-main.gif"
+								alt="Third slide"
+							/>
+							<div class="container">
+								<div class="carousel-caption">
+									<h1>One more for good measure.</h1>
+									<p>
+										Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non
+										mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id
+										elit.
+									</p>
+									<p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+				{% endcomment %}
+                {% block content %} {% endblock %}
+			</article>
+		</main>
+		<footer id="myFooter">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-3">
+						<h5>Nawigacja</h5>
+						<ul>
+							<li><a href="{% url 'mainpage:home' %}">Strona główna</a></li>
+							<li><a href="/#shark">Ranga Shark</a></li>
+							<li><a href="/#serwery">Serwery</a></li>
+							<li><a href="{% url 'bans:index' %}">Lista banów</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-3">
+						<h5>Załoga</h5>
+						<ul>
+							<li><a href="#">Poradniki</a></li>
+							<li><a href="#">Kontakt z ekipą</a></li>
+							<li><a href="#">Reviews</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-3">
+						<h5>Pomoc</h5>
+						<ul>
+							<li><a href="{% url 'mainpage:faq-list' %}">FAQ</a></li>
+							<li><a href="#">Poradniki</a></li>
+							<li><a href="{% url 'mainpage:rules' %}">Regulaminy</a></li>
+							<li><a href="#">HelpDesk</a></li>
+						</ul>
+					</div>
+					<div class="col-sm-3 info">
+						<h5>O nas</h5>
+						<p>
+							SharkServers.pl - Sieć Serwerów do gry Team Fortess 2. Powstała w 2015r. Na początku z
+							jednym serwerem 4fun/trade potem powstały kolejne serwery
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="second-bar">
+				<div class="container">
+					<div class="logo"><a href="#"> SharkServers.pl </a></div>
+					<div class="social-icons">
+						<a href="#" class="twitter"><i class="fab fa-steam-square"></i></a>
+						<a href="#" class="facebook"><i class="fab fa-discord"></i></a>
+					</div>
+				</div>
+			</div>
+		</footer>
+		{% comment %}
+		<script src="{% static 'mainpage/js/preloader.js' %}"></script>
+		{% endcomment %}
+		<script src="{% static 'mainpage/js/sceditor.min.js' %}"></script>
+		<script src="{% static 'mainpage/js/formats/bbcode.js' %}"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+			integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+		<script>
+			AOS.init();
+		</script>
+		{% block js %} {% endblock %}
+	</body>
+</html>

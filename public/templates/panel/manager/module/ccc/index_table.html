@@ -1,0 +1,55 @@
+<h1 class="text-center">Kolory czatu</h1>
+<div class="row">
+	<div class="table-responsive">
+	<table class="table dark-table table-dark">
+		<thead>
+			<th>identity</th>
+			<th>alias</th>
+			<th>flag</th>
+			<th>tag</th>
+			<th>tagcolor</th>
+			<th>namecolor</th>
+			<th>textcolor</th>
+			<th>Opcje</th>
+		</thead>
+		<tbody>
+			{% for module in data_with_paginate %}
+			<tr>
+				<td>{{ module.identity }}</td>
+				<td>{{ module.alias }}</td>
+				<td>{{ module.flag }}</td>
+				<td>{{ module.tag }}</td>
+				<td>
+					<span style="color: {{module.tagcolor}}">{{ module.tagcolor }}</span>
+				</td>
+				<td>
+					<span style="color: {{module.namecolor}}"> {{ module.namecolor }} </span>
+				</td>
+				<td>
+					<span style="color: {{module.textcolor}}"> {{ module.textcolor }} </span>
+				</td>
+				<td>
+					<a
+						class="btn btn-primary btn-sm"
+						href="{% url 'panel:manager-module-update' server_tag=server_tag module_tag=module_tag pk=module.id %}"
+						>Edytuj</a
+					>
+					<a
+						class="btn btn-danger btn-sm"
+						href="{% url 'panel:manager-module-delete' server_tag=server_tag module_tag=module_tag pk=module.id%}"
+						>Usuń</a
+					>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+</div>
+<div class="row float-right">
+  <a
+    class="btn btn-success"
+    href="{% url 'panel:manager-module-add' server_tag=server_tag module_tag=module_tag %}"
+    >Dodaj
+  </a>
+</div>

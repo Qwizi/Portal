@@ -1,0 +1,161 @@
+{% extends "base.html" %} {% block title %}Centrum użytkownika{% endblock title %} 
+{% block content%} {% comment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			{% include "user_centrum/nav.html" %}
+			<div class="col-md-12 mx-auto post" style="padding-top: 70px;">
+				<h1 class="text-center">Lista podań</h1>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="table-container dark-table table-dark">
+									<table class="table table-filter dark-table table-dark table-striped">
+										<thead>
+											<tr>
+												<td>Podania</td>
+											</tr>
+										</thead>
+										<tbody>
+											{% if data_with_paginate %} 
+												{% for app in data_with_paginate %}
+												<tr>
+													<td>
+														<div class="media">
+															<a
+																href="{% url 'centrum:application-detail' pk=app.pk %}"
+																class="pull-left"
+															>
+																<img src="{{ app.owner.avatar }}" class="img-fluid" />
+															</a>
+															<div class="media-body">
+																<span class="media-meta pull-right">{{ app.created }}</span>
+																<h4 class="title">
+																	<a href="{% url 'centrum:application-detail' pk=app.pk %}">
+																		Podanie na {{ app.type }}a - {{ app.server }}
+																	</a>
+																	{% if app.status == 0 %}
+																	<span class="pull-right process"> (W trakcie rozpatrywania) </span>
+																	{% elif app.status == 1 %}
+																	<span class="pull-right accepted"> (Zaakceptowano) </span> {% elif
+																	app.status == -1 %}
+																	<span class="pull-right canceled"> (Odrzucono) </span> {% endif %}
+																</h4>
+																<p class="summary">{{ app.owner.username }}</p>
+															</div>
+														</div>
+													</td>
+												</tr>
+												{% endfor %} 
+											{% else %}
+											<tr>
+												<td>
+													<div class="media">
+														<div class="media-body text-center">Brak podań</div>
+													</div>
+												</td>
+											</tr>
+											{% endif %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{% if perms.user_centrum.add_application %}
+						<a href="{% url 'centrum:application-create' %}" class="btn btn-success float-right"
+							>Napisz podanie</a
+						>
+						{% endif %}
+					</div>
+					{% include "pagination.html" %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endcomment %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						Podania
+					</div>
+					<div class="card-body">
+						<h1 class="card-title text-center">Podania</h1>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div class="table-container dark-table table-dark">
+											<table class="table table-filter dark-table table-dark table-striped">
+												<thead>
+													<tr>
+														<td>Podania</td>
+													</tr>
+												</thead>
+												<tbody>
+													{% if data_with_paginate %} 
+														{% for app in data_with_paginate %}
+														<tr>
+															<td>
+																<div class="media">
+																	<a
+																		href="{% url 'centrum:application-detail' pk=app.pk %}"
+																		class="pull-left"
+																	>
+																		<img src="{{ app.owner.avatar }}" class="img-fluid" />
+																	</a>
+																	<div class="media-body">
+																		<span class="media-meta pull-right">{{ app.created }}</span>
+																		<h4 class="title">
+																			<a href="{% url 'centrum:application-detail' pk=app.pk %}">
+																				Podanie na {{ app.type }}a - {{ app.server }}
+																			</a>
+																			{% if app.status == 0 %}
+																			<span class="pull-right process">
+																				(W trakcie rozpatrywania)
+																			</span>
+																			{% elif app.status == 1 %}
+																			<span class="pull-right accepted"> (Zaakceptowano) </span> {%
+																			elif app.status == -1 %}
+																			<span class="pull-right canceled"> (Odrzucono) </span> {% endif%}
+																		</h4>
+																		<p class="summary">{{ app.owner.username }}</p>
+																	</div>
+																</div>
+															</td>
+														</tr>
+														{% endfor %} 
+													{% else %}
+														<tr>
+															<td>
+																<div class="media">
+																	<div class="media-body text-center">Brak podań</div>
+																</div>
+															</td>
+														</tr>
+													{% endif %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								{% if perms.user_centrum.add_application %}
+								<a href="{% url 'centrum:application-create' %}" class="btn btn-success float-right"
+									>Napisz podanie</a
+								>
+								{% endif %}
+							</div>
+							{% include "pagination.html" %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}
