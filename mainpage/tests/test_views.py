@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from mainpage.models import Rules
+from mainpage.models import Rule
 from servers.models import Server
 from django.test import RequestFactory
 from mainpage import views
@@ -16,7 +16,7 @@ class MainPageViewsTestCase(TestCase):
             port="xxx",
             tag="test"
         )
-        self.rule = Rules.objects.create(
+        self.rule = Rule.objects.create(
             server=self.server,
             content='Test'
         )
@@ -32,7 +32,7 @@ class MainPageViewsTestCase(TestCase):
 
     def test_rules_list(self):
         request = self.factory.get(reverse('mainpage:rules'))
-        view = views.RulesList.as_view()
+        view = views.RuleList.as_view()
         response = view(request)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.template_name[0], 'mainpage/rules/list.html')

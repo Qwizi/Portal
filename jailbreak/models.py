@@ -94,7 +94,7 @@ class SourceModAdmin(models.Model):
     flags = models.CharField(max_length=30, null=True, blank=True)
     name = models.CharField(max_length=65, null=False)
     immunity = models.PositiveIntegerField(null=True, blank=True)
-    groups = models.ManyToManyField(SourceModGroup, blank=True)
+    groups = models.ManyToManyField(SourceModGroup, blank=True, related_name='groups_set')
 
     def __str__(self):
         return self.name

@@ -6,7 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from servers.models import Server
 from .models import Rule, FAQ
-from sourcebans.models import Bans
+from sourcebans.models import Ban
 from accounts.models import User
 from shop.models import Service
 from steamauth import RedirectToSteamSignIn, GetSteamID64
@@ -61,7 +61,7 @@ class Index(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['ban_list'] = Bans.objects.order_by('-created')
+        context['ban_list'] = Ban.objects.order_by('-created')
         context['bonus_list'] = Service.objects.all()[:3]
         return context
 

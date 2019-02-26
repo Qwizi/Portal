@@ -8,7 +8,7 @@ from .forms import (
     ApplicationModelForm,
     ApplicationModelFormCreate,
     ApplicationCommentsModelFormCreate)
-from sourcebans.models import Bans, Comms
+from sourcebans.models import Ban, Comm
 
 from digg_paginator import DiggPaginator
 import requests
@@ -42,7 +42,7 @@ class ApplicationDetail(generic.DetailView):
     # Pobiernie liczby otrzymanych banów
     def get_count_bans(self):
         obj = self.get_object()
-        bans = Bans.objects.filter(
+        bans = Ban.objects.filter(
             Q(authid=obj.owner.steamid32) & Q(sid=obj.server)
         ).count()
         return bans
@@ -50,7 +50,7 @@ class ApplicationDetail(generic.DetailView):
     # Pobieranie liczby otrzymanych blokad komunikacji
     def get_count_comms(self):
         obj = self.get_object()
-        comms = Comms.objects.filter(
+        comms = Comm.objects.filter(
             Q(authid=obj.owner.steamid32) & Q(sid=obj.server)).count()
         return comms
 

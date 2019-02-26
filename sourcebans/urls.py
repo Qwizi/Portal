@@ -5,12 +5,5 @@ from . import views
 app_name = 'sourcebans'
 
 urlpatterns = [
-    path('', 
-        views.BansIndex.as_view(), 
-        name='index'
-    ),
-    path('search', 
-        views.search_bans, 
-        name='search'
-    )
+    path('', views.BansIndex.as_view(), name='index')
 ]

@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import Bans
+from .models import Ban, Comm
 
-admin.site.register(Bans)
+admin.site.register(Ban)
+admin.site.register(Comm)

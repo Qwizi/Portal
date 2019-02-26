@@ -4,15 +4,8 @@
 {% load staticfiles %}
 {% block title %}Sieć serwerów Team Fortress 2{% endblock title %}
 {% block content %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 
-<section id="shark" class="dark-bg">
+<section id="shop" class="dark-bg">
     <div class="container inner">
         <div class="row">
             <div class="col-md-12">
@@ -44,14 +37,14 @@
         </div>
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center" style="margin-top: 10px;">
-                <a href="/sklep/" class="btn btn-info btn-lg">Przejdź do sklepu</a>
+                <a href="{% url 'shop:index' %}" class="btn btn-info btn-lg">Przejdź do sklepu</a>
             </div>
         </div>        
     </div>
 </section>
 
 {% comment %}
-<section id="serwery" class="light-bg">
+<section id="servers" class="light-bg">
     <div class="container inner">
         <div class="row">
             <div class="col-md-12">
@@ -93,7 +86,7 @@
     </div>
 </section>
 {% endcomment %}
-<section class="light-bg">
+<section id="servers" class="light-bg">
     <div class="container inner">
         <div class="row">
             <div class="col-md-12 text-center">
