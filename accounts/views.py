@@ -14,20 +14,14 @@ import urllib.parse
 from decimal import *
 
 # Strona głowna panelu użytkownika
-
-
-class Index(generic.TemplateView):
+class AccountIndex(generic.TemplateView):
     template_name = 'accounts/index.html'
 
 # Strona głowna portfela
-
-
 class WalletIndex(generic.TemplateView):
     template_name = 'accounts/wallet/index.html'
 
 # Wybieranie wartości doładowania portfela przez smsa
-
-
 class WalletPayment(generic.ListView):
     model = SMSNumber
     context_object_name = 'price_list'

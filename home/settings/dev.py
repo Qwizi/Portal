@@ -165,7 +165,7 @@ AUTHENTICATION_BACKENDS = (
     'accounts.backends.SteamBackend',
 )
 
-LOGIN_URL = '/logowanie'
+LOGIN_URL = '/login'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 

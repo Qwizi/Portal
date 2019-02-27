@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, Client
 from django.urls import reverse
 from accounts import views, models
 from shop.models import Bonus, Service, Price
@@ -8,45 +8,31 @@ class AccountsViewsTestCase(TestCase):
     def setUp(self):
         self.user = models.User.objects.create(
             username='Test',
-            steamid64='76561198190469450',
-            steamid32='STEAM_0:0:115101861',
-            is_staff=True,
-            is_superuser=True
+            steamid64='76561198190469453',
+            steamid32='STEAM_0:0:115104567',
+            is_staff=False,
+            is_superuser=False
         )
-        self.server = Server.objects.create(
-            name='Test',
-            ip='XXXX.XXXX.XXXX.XXXX',
-            port='XXXX',
-            tag='test'
-        )
-        self.bonus = Bonus.objects.create(
-            name='Test',
-            tag='test',
-            flags='t',
-            description='test',
-            description_full='test_full',
-        )
-        self.bonus.servers.add(self.server)
-        self.price = Price.objects.create(value='5.00')
-        self.service = Service.objects.create(
-            price=self.price,
-            days=7,
-            bonus=self.bonus
-        )
-        self.factory = RequestFactory()
 
-    def test_index(self):
-        request = self.factory.get(reverse('accounts:index'))
-        view = views.Index.as_view()
-        response = view(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'accounts/index.html')
+    def test_account_index_annonymous(self):
+        response = self.client.get(reverse('accounts:index'))
+        self.assertEqual(response.status_code, 302)
 
-    def test_wallet_index(self):
-        request = self.factory.get(reverse('accounts:wallet-index'))
-        view = views.WalletIndex.as_view(template_name='accounts/wallet/index.html')
-        response = view(request)
+    def test_account_index_login(self):
+        self.client.login(steamid64=self.user.steamid64)
+        response = self.client.get(reverse('accounts:index'))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/index.html')
+
+    def test_wallet_index_annonymous(self):
+        response = self.client.get(reverse('accounts:wallet-index'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_wallet_index_login(self):
+        self.client.login(steamid64=self.user.steamid64)
+        response = self.client.get(reverse('accounts:wallet-index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'accounts/wallet/index.html')
 
     def test_wallet_payment(self):
         payment = 'sms'
