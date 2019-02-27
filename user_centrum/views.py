@@ -7,9 +7,8 @@ from .models import Application, ApplicationComments
 from .forms import (
     ApplicationModelForm,
     ApplicationModelFormCreate,
-    ApplicationCommentsModelFormCreate)
-from sourcebans.models import Ban, Comm
-
+    ApplicationCommentsModelFormCreate
+)
 from digg_paginator import DiggPaginator
 import requests
 # Lista dostępnych skrotow
@@ -38,21 +37,6 @@ class ApplicationDetail(generic.DetailView):
     model = Application
     context_object_name = 'application'
     template_name = 'user_centrum/application/detail.html'
-
-    # Pobiernie liczby otrzymanych banów
-    def get_count_bans(self):
-        obj = self.get_object()
-        bans = Ban.objects.filter(
-            Q(authid=obj.owner.steamid32) & Q(sid=obj.server)
-        ).count()
-        return bans
-
-    # Pobieranie liczby otrzymanych blokad komunikacji
-    def get_count_comms(self):
-        obj = self.get_object()
-        comms = Comm.objects.filter(
-            Q(authid=obj.owner.steamid32) & Q(sid=obj.server)).count()
-        return comms
 
     # Tworzenie paginacji
     def make_paggination(self, queryset, limit):
@@ -84,8 +68,6 @@ class ApplicationDetail(generic.DetailView):
         context = super(ApplicationDetail, self).get_context_data(**kwargs)
         obj = self.get_object()
 
-        bans = self.get_count_bans()
-        comms = self.get_count_comms()
         comments = self.get_comments()
         vac = self.check_vac()
 
@@ -98,8 +80,6 @@ class ApplicationDetail(generic.DetailView):
         })
 
         context.update({
-            'bans': bans,
-            'cbans': comms,
             'vac': vac,
             'comments': comments,
             'data_with_paginate': self.make_paggination(comments, 15),

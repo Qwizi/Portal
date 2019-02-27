@@ -10,7 +10,6 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('bans/', include('sourcebans.urls', namespace='bans')),
     path('account/', include('accounts.urls', namespace='accounts')),
     path('shop/', include('shop.urls', namespace='shop')),
     path('panel/', include('panel.urls', namespace='panel')),

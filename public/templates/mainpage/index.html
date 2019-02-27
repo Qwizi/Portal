@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load servers %}
-{% load bans_length %}
 {% load staticfiles %}
 {% block title %}Sieć serwerów Team Fortress 2{% endblock title %}
 {% block content %}
@@ -137,49 +136,7 @@
     </div>
 </section>
 
-<section id="bans" class="light-bg">
-    <div class="container inner">
-        <div class="row" >
-            <div class="col-md-12">
-                <h2 class="text-center text-light"><i class="fas fa-ban"></i> Ostatnie bany</h2>
-            </div>
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    {% if ban_list %}
-                    
-                    <table class="table dark-table table-dark table-striped">
-                        <thead>
-                            <th scope="col">SERWER</th>
-                            <th scope="col">DATA</th>
-                            <th scope="col">NICK</th>
-                            <th scope="col">CZAS BANA</th>
-                            <th scope="col">POWOD</th>
-                        </thead>
-                        <tbody>
-                            {% for ban in ban_list %}
-                                <tr>
-                                    <td>{{ ban.sid }}</td>
-                                    <td>{{ ban.created|date:"d-m-y H:i" }}</td>
-                                    <td>{{ ban.name }}</td>
-                                    <td>{{ ban.length|minutes }}</td>
-                                    <td>{{ ban.reason }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% else %}
-                    <h3 class="text-center">Brak banów</h3>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-md-12 d-flex justify-content-center" style="margin-top: 10px;">
-                <a href="{% url 'bans:index' %}" class="btn btn-info btn-lg btn-block">Zobacz więcej</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="partners" class="dark-bg">
+<section id="partners" class="light-bg">
     <div class="container inner">
         <div class="row" >
             <div class="col-md-12">
