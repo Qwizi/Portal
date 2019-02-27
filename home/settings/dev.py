@@ -36,10 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'servers',
     'mainpage',
-    'sourcebans',
     'digg_paginator',
     'accounts',
     'shop',
@@ -49,7 +47,6 @@ INSTALLED_APPS = [
     'jailbreak',
     'panel',
     'user_centrum',
-    'django_bootstrap_breadcrumbs'
 ]
 
 MIDDLEWARE = [
