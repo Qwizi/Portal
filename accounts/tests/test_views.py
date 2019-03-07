@@ -3,6 +3,8 @@ from django.urls import reverse
 from accounts import views, models
 from shop.models import Bonus, Service, Price
 from servers.models import Server
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
 
 class AccountsViewsTestCase(TestCase):
     def setUp(self):
@@ -13,6 +15,21 @@ class AccountsViewsTestCase(TestCase):
             is_staff=False,
             is_superuser=False
         )
+        usergroup = models.MyGroup.objects.create(pk=2, name="Użytkownik")
+
+        accounts_ct = ContentType.objects.get(app_label='accounts', model='User')
+
+        perms_list = [
+            'view_account',
+            'view_wallet',
+            'add_wallet',
+            'transfer_wallet'
+        ]
+        for perm in perms_list:
+            account_perm = Permission.objects.get(codename=perm, content_type=accounts_ct)
+            usergroup.permissions.add(account_perm)
+
+        usergroup.user_set.add(self.user)
 
     def test_account_index_annonymous(self):
         response = self.client.get(reverse('accounts:index'))
@@ -26,49 +43,10 @@ class AccountsViewsTestCase(TestCase):
 
     def test_wallet_index_annonymous(self):
         response = self.client.get(reverse('accounts:wallet-index'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_wallet_index_login(self):
         self.client.login(steamid64=self.user.steamid64)
         response = self.client.get(reverse('accounts:wallet-index'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/wallet/index.html')
-
-    def test_wallet_payment(self):
-        payment = 'sms'
-        request = self.factory.get(reverse('accounts:wallet-payment', kwargs={'payment': payment}))
-        view = views.WalletPayment.as_view()
-        response = view(request, payment=payment)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'accounts/wallet/payment.html')
-
-    def test_wallet_add(self):
-        payment = 'sms'
-        request = self.factory.get(reverse('accounts:wallet-add', kwargs={'payment': payment}))
-        view = views.WalletAdd.as_view()
-        response = view(request, payment=payment)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'accounts/wallet/add.html')
-
-    def test_wallet_transfer(self):
-        request = self.factory.get(reverse('accounts:wallet-transfer'))
-        view = views.WalletTransferMoney.as_view()
-        response = view(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'accounts/wallet/transfer.html')
-
-    def test_wallet_payment_history(self):
-        request = self.factory.get(reverse('accounts:wallet-payment-history'))
-        view = views.WalletPaymentHistory.as_view()
-        request.user = self.user
-        response = view(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'accounts/wallet/history.html')
-
-    def test_myshopping(self):
-        request = self.factory.get(reverse('accounts:myshopping'))
-        view = views.MyShopping.as_view()
-        request.user = self.user
-        response = view(request)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], 'accounts/myshopping.html')

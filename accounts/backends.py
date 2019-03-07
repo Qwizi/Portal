@@ -41,19 +41,22 @@ class SteamBackend:
 
             response = requests.get(base_url, params=data)
             raw_data = response.json()
+
+            user_group = MyGroup.objects.get(pk=2)
+
             user = User(steamid64=steamid64)
             user.steamid32 = self.to_steamid32(steamid64)
             user.username = raw_data['response']['players'][0]['personaname']
             user.avatar = raw_data['response']['players'][0]['avatar']
             user.avatar_medium = raw_data['response']['players'][0]['avatarmedium']
             user.avatar_full = raw_data['response']['players'][0]['avatarfull']
-            
-            # Wysyłamy dane do bazy danych
+            user.display_group = user_group
+
+            # Finalne tworzenie użytkowni=ka
             user.save()
 
-            # dodajemy domyślną grupę użytkownikowi
-            my_group = MyGroup.objects.get(pk=2)
-            my_group.user_set.add(user)
+            # Dodawanie grupy "Użytkownik" do listy grup
+            user_group.user_set.add(user)
 
         return user
 

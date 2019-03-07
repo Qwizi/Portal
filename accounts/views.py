@@ -5,10 +5,9 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from shop.models import *
-from accounts.models import User, PaymentHistory
+from accounts.models import User, PaymentHistory, Payment
 from .forms import WalletTransfer, SMSNumberForm
 from digg_paginator import DiggPaginator
-
 import requests
 import urllib.parse
 from decimal import *
@@ -29,13 +28,31 @@ class WalletPayment(generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        form = SMSNumberForm(self.request.POST)
         context.update({
             'payment': self.kwargs['payment'],
-            'form': form
+            'form': SMSNumberForm(self.request.POST)
         })
         return context
 
+""" class WalletPayment(generic.TemplateView):
+    template_name = 'accounts/wallet/payment.html'
+
+    def get_payment_class(self):
+        payment = self.kwargs['payment']
+        #payment_classname = "{}Payment".format(payment.upper())()
+        PaymentClass = SMSPayment()
+        return PaymentClass
+
+    def get_payments(self):
+        PaymentClass = self.get_payment_class()
+        return PaymentClass.get_payments()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'payments': self.get_payments()
+        })
+        return context """
 
 # Sprawdzanie kodu
 class WalletAdd(generic.TemplateView):

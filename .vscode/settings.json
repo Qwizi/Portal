@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\Adrian\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe"
+    "python.pythonPath": "C:\\Users\\Adrian\\PycharmProjects\\portal-project\\myvenv\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": true
 }

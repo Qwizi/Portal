@@ -32,8 +32,8 @@ class MyGroup(models.Model):
     objects = GroupManager()
 
     class Meta:
-        verbose_name = _('grupa')
-        verbose_name_plural = _('grupy')
+        verbose_name = _('Grupa')
+        verbose_name_plural = _('Grupy')
 
     def __str__(self):
         return self.name
@@ -47,7 +47,7 @@ class MyUserManager(models.Manager):
             username=username, 
             steamid64=steamid64, 
             steamid32=steamid32, 
-            email=email
+            email=email,
         )
         user.save(using=self._db)
         return user
@@ -68,66 +68,17 @@ class MyUserManager(models.Manager):
 
 
 class User(models.Model):
-    username = models.CharField(
-        _('Nick'), 
-        max_length=255, 
-        null=True
-    )
-    steamid64 = models.CharField(
-        _('Steamid 64'), 
-        max_length=255, 
-        unique=True
-    )
-    steamid32 = models.CharField(
-        _('Steamid 32'), 
-        max_length=255, 
-        unique=True, 
-        null=True, 
-        blank=True
-    )
-    email = models.CharField(
-        _('E-mail'), 
-        max_length=255, 
-        unique=True, 
-        null=True, 
-        blank=True
-    )
-    avatar = models.CharField(
-        _('Avatar'),
-        max_length=255,
-        null=True,
-        blank=True
-    )
-    avatar_medium = models.CharField(
-        _('Avatar Medium'),
-        max_length=255,
-        null=True,
-        blank=True
-    )
-    avatar_full = models.CharField(
-        _('Avatar Full'),
-        max_length=255,
-        null=True,
-        blank=True
-    )
-    date_joined = models.DateTimeField(
-        _('Data dołączenia'), 
-        default=timezone.now
-    )
-    cash = models.DecimalField(
-        _('Pieniądze'),
-        max_digits=19, 
-        decimal_places=2,
-        default=0,
-    )
-    is_active = models.BooleanField(
-        _('Jest aktywny?'), 
-        default=True
-    )
-    is_staff = models.BooleanField(
-        _('Jest adminem?'), 
-        default=False
-    )
+    username = models.CharField(_('Nick'), max_length=255, null=True)
+    steamid64 = models.CharField(_('Steamid 64'), max_length=255, unique=True)
+    steamid32 = models.CharField(_('Steamid 32'), max_length=255, unique=True, null=True, blank=True)
+    email = models.CharField(_('E-mail'), max_length=255, unique=True, null=True, blank=True)
+    avatar = models.CharField(_('Avatar'),max_length=255,null=True,blank=True)
+    avatar_medium = models.CharField(_('Avatar Medium'),max_length=255,null=True,blank=True)
+    avatar_full = models.CharField(_('Avatar Full'),max_length=255,null=True,blank=True)
+    date_joined = models.DateTimeField(_('Data dołączenia'), default=timezone.now)
+    cash = models.DecimalField(_('Pieniądze'),max_digits=19, decimal_places=2,default=0,)
+    is_active = models.BooleanField(_('Jest aktywny?'), default=True)
+    is_staff = models.BooleanField(_('Jest adminem?'), default=False)
     is_superuser = models.BooleanField(
         _('superuser status'),
         default=False,
@@ -136,6 +87,7 @@ class User(models.Model):
             'explicitly assigning them.'
         ),
     )
+    display_group = models.ForeignKey(MyGroup, on_delete=models.CASCADE, related_name="user_display_group_set", null=True)
     groups = models.ManyToManyField(
         MyGroup,
         verbose_name=_('groups'),
@@ -273,3 +225,15 @@ class PaymentHistory(models.Model):
     class Meta:
         verbose_name = 'PaymentHistory'
         verbose_name_plural = 'PaymentHistorys'
+
+class Payment(models.Model):
+    tag = models.CharField(max_length=30)
+    name = models.CharField(max_length=50)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Platnosc'
+        verbose_name_plural = 'Platnosci'
