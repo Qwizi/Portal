@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'jailbreak',
     'panel',
     'user_centrum',
+    'profiles'
 ]
 
 MIDDLEWARE = [

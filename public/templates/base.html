@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load login_format %}
 <!DOCTYPE html>
 <html lang="pl">
 	<head>
@@ -70,7 +71,7 @@
 								alt="Steam login button"
 						/></a>
 						{% else %}
-						<a href="profil" class="nav-linl"><img class="img-fluid" src="{{ user.avatar }}"/></a>
+						<a href="{% url 'profiles:index' pk=user.pk %}" class="nav-link"><img class="img-fluid rounded" src="{{ user.avatar }}"/></a>
 						<a href="{% url 'accounts:wallet-index' %}" class="nav-link"
 							><span class="badge bg-primary">{{ user.get_cash }}</span></a
 						>
@@ -87,7 +88,7 @@
 
 						<div class="dropdown-menu dropdown-menu-right">
 							<a class="dropdown-item" href="{% url 'accounts:index' %}">Konto</a>
-							<a class="dropdown-item" href="#">Profil</a>
+							<a class="dropdown-item" href="{% url 'profiles:index' pk=user.pk %}">Profil</a>
 							<a class="dropdown-item" href="{% url 'accounts:wallet-index' %}">Portfel</a>
 							<div class="dropdown-divider"></div>
 							{% if user.is_staff %}

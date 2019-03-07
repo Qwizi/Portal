@@ -7,11 +7,11 @@ class Command(BaseCommand):
     help = 'Instaluje domyślne grupy'
 
     def handle(self, *args, **options):
-        wlasciciel = MyGroup.objects.create(pk=1, name='Właściciel')
-        uzytkownik = MyGroup.objects.create(pk=2, name='Użytkownik')
-        moderator = MyGroup.objects.create(pk=3, name='Moderator')
-        opiekun_globalny = MyGroup.objects.create(pk=4, name='Opiekun Globalny')
-        opiekun_serwera = MyGroup.objects.create(pk=5, name='Opiekun Serwera')
+        wlasciciel = MyGroup.objects.create(pk=1, name='Właściciel', login_format="<span style=\"color: red\">{username}</span>")
+        uzytkownik = MyGroup.objects.create(pk=2, name='Użytkownik', login_format="<span style=\"color: gray\">{username}</span>")
+        moderator = MyGroup.objects.create(pk=3, name='Moderator', login_format="<span style=\"color: green\">{username}</span>")
+        opiekun_globalny = MyGroup.objects.create(pk=4, name='Opiekun Globalny', login_format="<span style=\"color: black\">{username}</span>")
+        opiekun_serwera = MyGroup.objects.create(pk=5, name='Opiekun Serwera', login_format="<span style=\"color: purple\">{username}</span>")
 
         groups_list = [
             uzytkownik,

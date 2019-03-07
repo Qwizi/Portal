@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block title %}Profil użytkownika - {{user_profile.username}} {% load login_format %}{% endblock title %} 
+{% block content %}
+<section>
+    <div class="container inner">
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %} {% include "messages.html" %} {% endif %}
+                <div class="card light-bg">
+                    <div class="card-body">
+                        <img src="{{user_profile.avatar_full}}" class="rounded" alt="Avatar użytkownika {{user_profile.avatar_full}}">
+                        <h4 class="card-title" style="margin-left: 60px;">{{ user_profile|login_format }}</h4>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Informcje podstawowe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Steam</a>
+                        </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <ul class="list-group list-group-flush dark-bg">
+                                <li class="list-group-item light-bg"><i class="fas fa-calendar-alt"></i> Dołączył: {{ user_profile.date_joined }}</li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                            <ul class="list-group list-group-flush dark-bg">
+                                <li class="list-group-item light-bg">Profil steam: <a href="https://steamcommunity.com/profiles/{{user_profile.steamid64}}">https://steamcommunity.com/profiles/{{user_profile.steamid64}}</a></li>
+                                <li class="list-group-item light-bg"></i> SteamID 32: {{ user_profile.steamid32 }}</li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

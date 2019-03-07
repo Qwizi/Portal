@@ -27,7 +27,7 @@ class MyGroup(models.Model):
         verbose_name=_('permissions'),
         blank=True,
     )
-    login_format = models.CharField(max_length=512, null=True, blank=True)
+    login_format = models.CharField(max_length=512, default="{username}")
 
     objects = GroupManager()
 
