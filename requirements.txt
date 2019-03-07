@@ -9,3 +9,4 @@ pylint-django
 pymysql
 Pillow
 steamquery
+python-memcached
