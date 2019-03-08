@@ -8,7 +8,7 @@ from django.contrib import messages
 
 from digg_paginator import DiggPaginator
 from servers.models import Server
-from accounts.models import PaymentHistory
+from accounts.models import PaymentHistory, MyGroup, User
 from .forms import ShopForm, ShopAddForm
 from .models import Service, Premium, PremiumCache, Bonus
 # Lista usług
@@ -80,6 +80,12 @@ class ServiceFinish(generic.TemplateView):
                         service_id.bonus.name, price, server_id.name),
                     type='Sklep'
                 )
+                SharkGroup = MyGroup.objects.get(pk=6)
+
+                if user.display_group.pk != 6 and user.display_group.pk == 2:
+                    user.display_group = SharkGroup
+                    user.save()
+                
                 messages.success(
                     self.request, "Pomyślnie przedłużono usługę %s" % (service_id.bonus.name))
                 return redirect(reverse('accounts:myshopping'))
@@ -105,6 +111,13 @@ class ServiceFinish(generic.TemplateView):
                     service=service_id
                 )
                 user.remove_cash(price)
+
+                SharkGroup = MyGroup.objects.get(pk=6)
+
+                if user.display_group.pk != 6 and user.display_group.pk == 2:
+                    user.display_group = SharkGroup
+                    user.save()
+
                 PaymentHistory.objects.create(
                     user=user,
                     target=user,
@@ -153,6 +166,11 @@ class Cron(generic.View):
                 Q(time__lte=datetime.datetime.now()) & Q(premium__isnull=False))
             for i in p_cache:
                 i.premium.delete()
+                user = User.objects.get(steamid32=i.nick)
+                if user.display_group == 6:
+                    SharkGroup = MyGroup.objects.get(pk=6)
+                    user.display_group = SharkGroup
+                    user.save()
         except PremiumCache.DoesNotExist:
             return redirect(reverse('mainpage:home'))
         return redirect(reverse('mainpage:home'))

@@ -72,6 +72,12 @@
 						/></a>
 						{% else %}
 						<a href="{% url 'profiles:index' pk=user.pk %}" class="nav-link"><img class="img-fluid rounded" src="{{ user.avatar }}"/></a>
+						<span class="nav-link badge bg-dark" 
+						{% if user.display_group.pk == 6 %}
+							data-container="body" data-toggle="popover" data-placement="bottom" data-content="Pozostało 7 dni do końca Sharka"
+						{% endif %} >
+							{{ user.display_group|groupname_format }}
+						</span>
 						<a href="{% url 'accounts:wallet-index' %}" class="nav-link"
 							><span class="badge bg-primary">{{ user.get_cash }}</span></a
 						>
@@ -240,12 +246,12 @@
 		<script
 			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
 			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-			crossorigin="anonymous"
+			crossorigin="an`onymous"
 		></script>
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 		<script>
-			AOS.init();
+			$(function () {
+				$('[data-toggle="popover"]').popover()
+			})
 		</script>
 		{% block js %} {% endblock %}
 	</body>

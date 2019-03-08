@@ -17,7 +17,8 @@ class UserCreationForm(forms.ModelForm):
             'is_staff',
             'is_superuser',
             'groups',
-            'user_permissions'
+            'user_permissions',
+            'display_group'
         )
 
 class UserChangeForm(forms.ModelForm):
@@ -34,6 +35,7 @@ class UserChangeForm(forms.ModelForm):
             'groups',
             'user_permissions',
             'cash',
+            'display_group'
         )
 
 class UserAdmin(BaseUserAdmin):
@@ -45,7 +47,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'steamid64', 'steamid32')}),
         ('Personal info', {'fields': ('email', 'cash')}),
-        ('Permissions', {'fields': ('is_staff', 'is_superuser','groups')}),
+        ('Permissions', {'fields': ('is_staff', 'is_superuser', 'display_group', 'groups')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.

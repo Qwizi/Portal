@@ -200,6 +200,10 @@ class User(models.Model):
         self.save()
         return True
 
+    def set_display_group(self, group):
+        self.display_group = group
+        self.save()
+        return True
 class PaymentHistory(models.Model):
     USER = 'USER'
     SHOP = 'SHOP'
@@ -216,7 +220,7 @@ class PaymentHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user", null=True)
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender", null=True, blank=True)
     change = models.CharField(max_length=50, null=True)
-    description = models.CharField(max_length=50, null=True)
+    description = models.CharField(max_length=255, null=True)
     date = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default=SHOP)
     def __str__(self):
