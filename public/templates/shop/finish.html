@@ -23,7 +23,11 @@
 								<td>{{ server }}</td>
 								<td>{{ service.bonus.name }}</td>
 								<td>{{ service.days }}</td>
+								{% if service.promotion_price != 0.0 %}
+								<td>{{ service.promotion_price }} zł</td>
+								{% else %}
 								<td>{{ service.price.value }} zł</td>
+								{% endif %}
 							</tr>
 						</tbody>
 					</table>
@@ -64,7 +68,11 @@
 										<td>{{ server }}</td>
 										<td>{{ service.bonus.name }}</td>
 										<td>{{ service.days }}</td>
+										{% if service.promotion_price != 0.0 %}
+										<td>{{ service.promotion_price }} zł</td>
+										{% else %}
 										<td>{{ service.price.value }} zł</td>
+										{% endif %}
 									</tr>
 								</tbody>
 							</table>
