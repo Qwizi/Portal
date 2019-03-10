@@ -1,16 +1,18 @@
 import datetime
 import time
+from decimal import *
 
 from django.views import generic
 from django.db.models import Q
 from django.shortcuts import redirect, reverse
 from django.contrib import messages
+from django.http import HttpResponse
 
 from digg_paginator import DiggPaginator
 from servers.models import Server
-from accounts.models import PaymentHistory
+from accounts.models import PaymentHistory, MyGroup, User
 from .forms import ShopForm, ShopAddForm
-from .models import Service, Premium, PremiumCache, Bonus
+from .models import Service, Premium, PremiumCache, Bonus, PromotionServicePrice
 # Lista usług
 
 
@@ -23,7 +25,9 @@ class Index(generic.ListView):
         context = super().get_context_data(**kwargs)
         digg_paginator = DiggPaginator(self.queryset, 10)
         page = self.request.GET.get('page')
-        context.update({'data_with_paginate': digg_paginator.get_page(page)})
+        context.update({
+            'data_with_paginate': digg_paginator.get_page(page)
+        })
         return context
 
 # Lista serwerów na których można zakupić uslugę
@@ -55,7 +59,10 @@ class ServiceFinish(generic.TemplateView):
         p_days = int(self.request.POST.get('days'))
         days_add = datetime.datetime.now() + datetime.timedelta(days=p_days)
         user = self.request.user
-        price = service_id.price.value
+        if service_id.promotion_price != 0.0:
+            price = service_id.promotion_price
+        else:
+            price = service_id.price.value
 
         try:
             premium_cache = PremiumCache.objects.get(
@@ -80,6 +87,12 @@ class ServiceFinish(generic.TemplateView):
                         service_id.bonus.name, price, server_id.name),
                     type='Sklep'
                 )
+                SharkGroup = MyGroup.objects.get(pk=6)
+
+                if user.display_group.pk != 6 and user.display_group.pk == 2:
+                    user.display_group = SharkGroup
+                    user.save()
+                
                 messages.success(
                     self.request, "Pomyślnie przedłużono usługę %s" % (service_id.bonus.name))
                 return redirect(reverse('accounts:myshopping'))
@@ -105,6 +118,13 @@ class ServiceFinish(generic.TemplateView):
                     service=service_id
                 )
                 user.remove_cash(price)
+
+                SharkGroup = MyGroup.objects.get(pk=6)
+
+                if user.display_group.pk != 6 and user.display_group.pk == 2:
+                    user.display_group = SharkGroup
+                    user.save()
+
                 PaymentHistory.objects.create(
                     user=user,
                     target=user,
@@ -150,12 +170,17 @@ class Cron(generic.View):
     def get(self, request, *args, **kwargs):
         try:
             p_cache = PremiumCache.objects.filter(
-                Q(time__lte=datetime.datetime.now()) & Q(premium__isnull=False))
+                Q(time__lte=datetime.datetime.now()) & Q(premium__isnull=False)
+            )
             for i in p_cache:
                 i.premium.delete()
+                UserGroup = MyGroup.objects.get(pk=2)
+                user = User.objects.get(steamid32=i.nick)
+                user.display_group = UserGroup
+                user.save()
         except PremiumCache.DoesNotExist:
-            return redirect(reverse('mainpage:home'))
-        return redirect(reverse('mainpage:home'))
+            return HttpResponse('')
+        return HttpResponse('')
 
 # lista z zakupionymi usługami
 

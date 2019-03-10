@@ -1,35 +1,40 @@
-{% extends "base.html" %} {% block title %}Sklep 24/7{% endblock title %} {% block content %} 
-{% comment %}
+{% extends "base.html" %} {% block title %}Sklep 24/7{% endblock title %} {% block content %}
 <section>
 	<div class="container inner">
-		<div class="row post" style="padding-top: 70px;">
+		<div class="row">
 			<div class="col-md-12">
-				<h1>Wybierz usługę</h1>
+				<h2 class="text-center text-light"><i class="fas fa-gem"></i> Sklep</h2>
+				<p class="text-center text-muted">Wybierz usługę</p>
 			</div>
-			<div class="pricing card-deck flex-column flex-md-row mb-3 mx-auto" data-aos="zoom-in">
+		</div>
+		<div class="row">
+			<div class="pricing card-deck flex-column flex-md-row mb-3 mx-auto">
 				{% for service in data_with_paginate %}
 				<div
 					class="card light-bg {% if service.days == 30 and service.bonus.tag == 'shark' %} popular {% endif %}card-pricing text-center px-3 mb-4"
 				>
-					<span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">{{
-						service.bonus.name
-					}}</span>
+					<span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">{{service.bonus.name}}</span>
 					<div class="bg-transparent card-header pt-4 border-0">
-						<h1 class="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">
-							<span class="price">{{ service.price }} zł</span
-							><span class="h6 text-muted ml-2">/ na {{ service.days }} dni</span>
-						</h1>
+						<h2 class="h2 font-weight-normal text-primary text-center mb-0" data-pricing-value="{{ service.price }}">
+							<span class="price">
+								{% if service.promotion_price != 0.0 %}
+									<del>{{ service.price.value }} zł</del>
+									{{ service.promotion_price }} zł
+								{% else %}
+									{{ service.price.value }} zł
+								{% endif %}
+							</span>
+							<span class="h6 text-muted ml-2">/ na {{ service.days }} dni</span>
+						</h2>
 					</div>
 					<div class="card-body pt-0">
 						<ul class="list-unstyled mb-4">
-							{{
-								service.bonus.description | safe
-							}}
+							{{service.bonus.description|safe}}
 						</ul>
 						<a
 							href="{% url 'shop:service' service_tag=service.bonus.tag service_days=service.days%}"
 							class="btn btn-outline-primary mb-3"
-							>Kup teraz</a
+							>Wybieram</a
 						>
 					</div>
 				</div>
@@ -37,38 +42,5 @@
 			</div>
 		</div>
 	</div>
-</section>
-{% endcomment %}
-<section>
-	<div class="container inner">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-center text-light"><i class="fas fa-gem"></i> Sklep</h2>
-                <p class="text-center text-muted">Wybierz usługę</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="pricing card-deck flex-column flex-md-row mb-3 mx-auto">
-                {% for service in data_with_paginate %}
-                <div class="card light-bg {% if service.days == 30 and service.bonus.tag == 'shark' %} popular {% endif %}card-pricing text-center px-3 mb-4" >
-                        <span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm"
-                            >{{ service.bonus.name }}</span
-                        >
-                        <div class="bg-transparent card-header pt-4 border-0">
-                            <h2 class="h2 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">
-                                <span class="price">{{ service.price }} zł</span><span class="h6 text-muted ml-2">/ na {{service.days}} dni</span>
-                            </h2>
-                        </div>
-                        <div class="card-body pt-0">
-                            <ul class="list-unstyled mb-4">
-                                {{ service.bonus.description|safe}}
-                            </ul>
-                            <a href="{% url 'shop:service' service_tag=service.bonus.tag service_days=service.days%}" class="btn btn-outline-primary mb-3">Wybieram</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>    
-    </div>
 </section>
 {% endblock %}

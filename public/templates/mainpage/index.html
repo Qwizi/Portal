@@ -21,7 +21,15 @@
                         >
                         <div class="bg-transparent card-header pt-4 border-0">
                             <h2 class="h2 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">
-                                <span class="price">{{ service.price }} zł</span><span class="h6 text-muted ml-2">/ na {{service.days}} dni</span>
+                                    <span class="price">
+                                    {% if service.promotion_price != 0.0 %}
+                                        <del>{{ service.price.value }} zł</del>
+                                        {{ service.promotion_price }} zł
+                                    {% else %}
+                                        {{ service.price.value }} zł
+                                    {% endif %}
+                                    </span>
+                                <span class="h6 text-muted ml-2">/ na {{service.days}} dni</span>
                             </h2>
                         </div>
                         <div class="card-body pt-0">

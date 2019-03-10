@@ -24,7 +24,8 @@ class Price(models.Model):
     value = models.DecimalField(
         max_digits=19,
         decimal_places=2,
-        default=0)
+        default=0
+    )
 
     def __str__(self):
         return "%.2f" % (Decimal(self.value))
@@ -73,6 +74,11 @@ class Service(models.Model):
     price = models.ForeignKey(Price, on_delete=models.CASCADE)
     days = models.IntegerField()
     bonus = models.ForeignKey(Bonus, on_delete=models.CASCADE, null=True)
+    promotion_price = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        default=0
+    )
 
     class Meta:
         db_table = 'shop_service'
@@ -120,3 +126,15 @@ class PromotionCode(models.Model):
         db_table = 'shop_promotion_code'
         verbose_name = 'Kod promocyjny'
         verbose_name_plural = 'Kody promocyjne'
+
+class PromotionServicePrice(models.Model):
+
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    percent = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return "%.2f" % (self.percent)
+
+    class Meta:
+        verbose_name = 'Sklep - Promocyjna cena'
+        verbose_name_plural = 'Sklep - Promocyjne ceny'
