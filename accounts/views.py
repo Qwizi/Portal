@@ -34,26 +34,6 @@ class WalletPayment(generic.ListView):
         })
         return context
 
-""" class WalletPayment(generic.TemplateView):
-    template_name = 'accounts/wallet/payment.html'
-
-    def get_payment_class(self):
-        payment = self.kwargs['payment']
-        #payment_classname = "{}Payment".format(payment.upper())()
-        PaymentClass = SMSPayment()
-        return PaymentClass
-
-    def get_payments(self):
-        PaymentClass = self.get_payment_class()
-        return PaymentClass.get_payments()
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'payments': self.get_payments()
-        })
-        return context """
-
 # Sprawdzanie kodu
 class WalletAdd(generic.TemplateView):
     template_name = 'accounts/wallet/add.html'

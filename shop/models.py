@@ -5,6 +5,16 @@ from django.conf import settings
 from django_unixdatetimefield import UnixDateTimeField
 from decimal import *
 
+class Payment(models.Model):
+
+    def __str__(self):
+        pass
+
+    class Meta:
+        db_table = ''
+        managed = True
+        verbose_name = 'Sklep -'
+        verbose_name_plural = 'Payments'
 
 class Premium(models.Model):
     nick = models.CharField(max_length=512, null=False)

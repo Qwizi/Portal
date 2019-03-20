@@ -44,102 +44,130 @@ class ServiceDetail(generic.DetailView):
         )
 
 # Finalizacja zakupu
-
-
 class ServiceFinish(generic.TemplateView):
     template_name = 'shop/finish.html'
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
-        server_id = Server.objects.get(pk=self.request.POST.get('server'))
-        service_id = Service.objects.get(pk=self.request.POST.get('service'))
-
+        p_server = self.request.POST.get('server')
+        p_service = self.request.POST.get('service')
         p_nick = self.request.POST.get('nick')
         p_flags = self.request.POST.get('flags')
         p_days = int(self.request.POST.get('days'))
-        days_add = datetime.datetime.now() + datetime.timedelta(days=p_days)
-        user = self.request.user
-        if service_id.promotion_price != 0.0:
-            price = service_id.promotion_price
-        else:
-            price = service_id.price.value
 
-        try:
-            premium_cache = PremiumCache.objects.get(
-                Q(nick=p_nick) & Q(flags=p_flags)
-                & Q(server=server_id) & Q(time__gte=datetime.datetime.now())
-            )
-            premium_exists = True
-        except PremiumCache.DoesNotExist:
-            premium_exists = False
+        if p_server and p_service and p_nick and p_flags and p_days is not None:
+            server_id = None
+            service_id = None
 
-        if premium_exists:
-            if user.cash >= price:
-                premium_cache.time += datetime.timedelta(days=p_days)
-                premium_cache.service.days += p_days
-                premium_cache.save()
-                user.remove_cash(price)
-                PaymentHistory.objects.create(
-                    user=user,
-                    target=user,
-                    change="-%.2f zł" % (price),
-                    description="Przedłużenie usługi %s o %s dni na serwerze %s" % (
-                        service_id.bonus.name, price, server_id.name),
-                    type='Sklep'
-                )
-                SharkGroup = MyGroup.objects.get(pk=6)
+            #* Pobieranie serwera
+            try:
+                server_id = Server.objects.get(pk=p_server)
+            except Server.DoesNotExist:
+                server_id = None
 
-                if user.display_group.pk != 6 and user.display_group.pk == 2:
-                    user.display_group = SharkGroup
-                    user.save()
-                
-                messages.success(
-                    self.request, "Pomyślnie przedłużono usługę %s" % (service_id.bonus.name))
-                return redirect(reverse('accounts:myshopping'))
-            else:
-                messages.error(
-                    self.request, "Nie masz środków do zakupu tej usługi. Doładuj portfel.")
-                return redirect(reverse('accounts:wallet-index'))
-        else:
-            if user.cash >= price:
-                premium = Premium.objects.create(
-                    nick=p_nick,
-                    server=server_id,
-                    flags=p_flags
-                )
+            #* Pobieranie usługi
+            try:
+                service_id = Service.objects.get(pk=p_service)
+            except Service.DoesNotExist:
+                service_id = None
 
-                premium_cache = PremiumCache.objects.create(
-                    nick=premium.nick,
-                    flags=premium.flags,
-                    server=premium.server,
-                    time=days_add,
-                    # user=user
-                    premium=premium,
-                    service=service_id
-                )
-                user.remove_cash(price)
+            if server_id and service_id is not None:
+                days_add = datetime.datetime.now() + datetime.timedelta(days=p_days)
+                user = self.request.user
+                premium_cache = None
 
-                SharkGroup = MyGroup.objects.get(pk=6)
+                if service_id.promotion_price != 0.0:
+                    price = service_id.promotion_price
+                else:
+                    price = service_id.price.value
 
-                if user.display_group.pk != 6 and user.display_group.pk == 2:
-                    user.display_group = SharkGroup
-                    user.save()
+                #* Pobieranie Premki
+                try:
+                    premium_cache = PremiumCache.objects.get(
+                        Q(nick=p_nick) & Q(flags=p_flags)
+                        & Q(server=server_id) & Q(time__gte=datetime.datetime.now())
+                    )
+                except PremiumCache.DoesNotExist:
+                    premium_cache = None
 
-                PaymentHistory.objects.create(
-                    user=user,
-                    target=user,
-                    change="-%.2f zł" % (price),
-                    description="Zakup usługi %s za %.2f zł" % (
-                        service_id.bonus.name, price),
-                    type='Sklep'
-                )
-                messages.success(
-                    self.request, "Pomyślnie zakupiono usługę %s" % (service_id.bonus.name))
-                return redirect(reverse('accounts:myshopping'))
-            else:
-                messages.error(
-                    self.request, "Nie masz środków do zakupu tej usługi. Doładuj portfel.")
-                return redirect(reverse('accounts:wallet-index'))
+                if premium_cache is not None:
+                    if user.cash >= price:
+                        premium_cache.time += datetime.timedelta(days=p_days)
+                        premium_cache.service.days += p_days
+                        premium_cache.save()
+                        
+                        user.remove_cash(price)
+
+                        PaymentHistory.objects.create(
+                            user=user,
+                            target=user,
+                            change="-%.2f zł" % (price),
+                            description="Przedłużenie usługi {} o {} dni na serwerze {}".format(
+                                service_id.bonus.name, price, server_id.name
+                            ),
+                            type='Sklep'
+                        )
+
+                        shark_group = None
+
+                        try:
+                            shark_group = MyGroup.objects.get(pk=6)
+                        except MyGroup.DoesNotExist:
+                            shark_group = None
+
+                        if shark_group is not None:
+                            if user.display_group != 6 and user.display_group.pk == 2:
+                                user.display_group = shark_group
+                                user.save()
+                        
+                        messages.success(self.request, "Pomyślnie przedłużono usługę {}".format(service_id.bonus.name))
+                        return redirect(reverse('accounts:myshopping'))
+                    else:
+                        messages.error(self.request, "Nie masz środków do zakupu tej usługi. Doładuj portfel.")
+                        return redirect(reverse('accounts:wallet-index'))
+                else:
+                    if user.cash >= price:
+                        premium = Premium.objects.create(
+                            nick=p_nick,
+                            server=server_id,
+                            flags=p_flags
+                        )
+                        premium_cache = PremiumCache.objects.create(
+                            nick=premium.nick,
+                            flags=premium.flags,
+                            server=premium.server,
+                            time=days_add,
+                            premium=premium,
+                            service=service_id
+                        )
+
+                        shark_group = None
+
+                        try:
+                            shark_group = MyGroup.objects.get(pk=6)
+                        except MyGroup.DoesNotExist:
+                            shark_group = None
+
+                        if shark_group is not None:
+                            if user.display_group != 6 and user.display_group.pk == 2:
+                                user.display_group = shark_group
+                                user.save()
+
+                        user.remove_cash(price)
+
+                        PaymentHistory.objects.create(
+                            user=user,
+                            target=user,
+                            change="-%.2f zł" % (price),
+                            description="Zakup usługi %s za %.2f zł" % (
+                                service_id.bonus.name, price),
+                            type='Sklep'
+                        )
+                        messages.success(self.request, "Pomyślnie zakupiono usługę %s" % (service_id.bonus.name))
+                        return redirect(reverse('accounts:myshopping'))
+                    else:
+                        messages.error(self.request, "Nie masz środków do zakupu tej usługi. Doładuj portfel.")
+                        return redirect(reverse('accounts:wallet-index'))
         return self.render_to_response(context=context)
 
     def get_context_data(self, **kwargs):

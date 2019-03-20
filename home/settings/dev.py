@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'api',
-    'jailbreak',
     'user_centrum',
     'profiles'
 ]
