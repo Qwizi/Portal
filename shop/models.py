@@ -128,7 +128,7 @@ class PromotionCode(models.Model):
         default=0)
     read_count = models.IntegerField(default=0)
     multi = models.BooleanField(default=False)
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     def __str__(self):
         return "%s | %s" % (self.code, self.value)

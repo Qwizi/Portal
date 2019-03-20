@@ -3,10 +3,11 @@ from django.conf import settings
 from django.views import generic
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
+from django.http import Http404
 
 from shop.models import *
 from accounts.models import User, PaymentHistory
-from .forms import WalletTransfer, SMSNumberForm
+from .forms import WalletTransfer, SMSNumberForm, PromotionCodeForm
 from digg_paginator import DiggPaginator
 import requests
 import urllib.parse
@@ -31,6 +32,7 @@ class WalletIndex(generic.TemplateView):
         return context
 
 # Wybieranie wartości doładowania portfela przez smsa
+""" 
 class WalletPayment(generic.ListView):
     model = SMSNumber
     context_object_name = 'price_list'
@@ -42,10 +44,36 @@ class WalletPayment(generic.ListView):
             'payment': self.kwargs['payment'],
             'form': SMSNumberForm(self.request.POST)
         })
-        return context
+        return context 
+"""
+class WalletPayment(generic.TemplateView):
+    template_name = 'accounts/wallet/payment.html'
+
+
+    def get_payment_form(self):
+        form = None
+        if self.kwargs['payment'] == 'sms':
+            form = SMSNumberForm()
+        elif self.kwargs['payment'] == 'promotion_code':
+            form = PromotionCodeForm()
+        else:
+            form = None
+
+        if form is None:
+            raise Http404
+
+        return form
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'payment': self.kwargs['payment'],
+            'form': self.get_payment_form()
+        })
+        return context 
 
 # Sprawdzanie kodu
-class WalletAdd(generic.TemplateView):
+class WalletPaymentFinish(generic.TemplateView):
     template_name = 'accounts/wallet/add.html'
 
     def post(self, request, *args, **kwargs):

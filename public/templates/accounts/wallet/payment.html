@@ -1,76 +1,49 @@
-{% extends "base.html" %} {% block title %}Portfel{% endblock title %} {% load float %} {% block content %} {% comment %}
+{% extends "base.html" %} {% block title %}Portfel{% endblock title %} {% load float %} {% block content %}
+{% comment %}
 <section>
-	<div class="container inner">
-		<div class="row">
-			<div class="col-md-12">
-				{% if messages %} {% include "messages.html" %} {% endif %}
-			</div>
-			{% include "accounts/nav.html" %}
-			<div class="col-md-12">
-				<div class="post mx-auto">
-					{% if payment == 'sms'%}
-					<h1 class="text-center">Doładuj porfel za pomocą SMS</h1>
-					<h4 class="text-center">Wybierz kwote doładowania</h4>
-					<form action="{% url 'accounts:wallet-add' payment='sms'%}" method="post">
-						{% csrf_token %}
-						<div class="form-group">
-							<select class="form-control" name="pid">
-								{% for price in price_list %}
-								<option value="{{ price.pk }}">{{ price.value }}</option>
-								{% endfor %}
-							</select>
+		<div class="container inner">
+			<div class="row">
+				<div class="col-md-12">
+					{% if messages %} {% include "messages.html" %} {% endif %}
+					<div class="card light-bg">
+						<div class="card-header blue-bg">
+							{% include "accounts/nav.html" %}
 						</div>
-						<button class="btn btn-primary" type="submit">Wybieram</button>
-					</form>
-					{% elif payment == 'promotion_code' %}
-					<form action="{% url 'accounts:wallet-success' payment='promotion_code' %}" method="post">
-						<div class="form-group">
-							<label for="code">Kod Promocyjny</label>
-							<input
-								class="form-control"
-								id="code"
-								name="code"
-								placeholder="Wpisz tutaj kod promocyjny"
-							/>
+						<div class="card-body text-center">
+							{% if payment == 'sms' %}
+							<h2 class="card-title">Doładuj porfel za pomocą SMS</h2>
+							<h4>Wybierz kwote doładowania</h4>
+							<form action="{% url 'accounts:wallet-add' payment='sms'%}" method="post">
+								{% csrf_token %}
+								{{form}}
+								<button class="btn btn-primary" type="submit">Wybieram</button>
+							</form>
+							{% elif payment == 'promotion_code' %}
+							<h2 class="card-title">Doładuj porfel za pomocą kodu promocyjnego</h2>
+							<form
+								action="{% url 'accounts:wallet-success' payment='promotion_code' %}"
+								method="post"
+							>
+								<div class="form-group">
+									<label for="code">Kod Promocyjny</label>
+									<input
+										class="form-control"
+										id="code"
+										name="code"
+										placeholder="Wpisz tutaj kod promocyjny"
+									/>
+								</div>
+								{% csrf_token %}
+								<button class="btn btn-primary">Doładuj</button>
+							</form>
+							{% else %}
+							<h1>Nie znaleziono strony</h1>
+							{% endif %}
 						</div>
-						{% csrf_token %}
-						<button class="btn btn-primary">Doładuj</button>
-					</form>
-					{% elif payment == 'przelew' %}
-					<h1 class="text-center">Doładuj portfel za pomocą przelewu online</h1>
-					<form action="https://ssl.dotpay.pl/">
-						<input type="hidden" name="id" value="261217" />
-						<input type="hidden" name="currency" value="PLN" />
-						<input
-							type="hidden"
-							name="description"
-							value="Doładowanie wirtualnego portfela SharkServers.pl"
-						/>
-						<input type="hidden" name="type" value="0" />
-						<input
-							type="hidden"
-							name="URL"
-							value="http://localhost:8000/konto/portfel/platnosc/przelew/doladuj"
-						/>
-						<input type="hidden" name="api_version" value="dev" />
-						<input type="hidden" name="control" value="645" />
-						<div class="form-group">
-							<input
-								class="form-control"
-								name="amount"
-								value=""
-								placeholder="Wpisz tutaj kwotę jaką chcesz doładować"
-							/>
-						</div>
-						<button class="btn btn-success" type="submit">Doładuj</button>
-					</form>
-					{% else %}
-					<h1>Nie znaleziono strony</h1>
-					{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </section>
 {% endcomment %}
 <section>
@@ -84,33 +57,21 @@
 					</div>
 					<div class="card-body text-center">
 						{% if payment == 'sms' %}
-						<h2 class="card-title">Doładuj porfel za pomocą SMS</h2>
-						<h4>Wybierz kwote doładowania</h4>
-						<form action="{% url 'accounts:wallet-add' payment='sms'%}" method="post">
-							{% csrf_token %}
-							{{form}}
-							<button class="btn btn-primary" type="submit">Wybieram</button>
-						</form>
+							<h2 class="card-title">Doładuj porfel za pomocą SMS</h2>
+							<h4>Wybierz kwote doładowania</h4>
+							<form action="{% url 'accounts:wallet-payment-finish' payment='sms'%}" method="post">
+								{% csrf_token %}
+								{{form}}
+								<button class="btn btn-success" type="submit">Wybieram</button>
+							</form>
 						{% elif payment == 'promotion_code' %}
-						<h2 class="card-title">Doładuj porfel za pomocą kodu promocyjnego</h2>
-						<form
-							action="{% url 'accounts:wallet-success' payment='promotion_code' %}"
-							method="post"
-						>
-							<div class="form-group">
-								<label for="code">Kod Promocyjny</label>
-								<input
-									class="form-control"
-									id="code"
-									name="code"
-									placeholder="Wpisz tutaj kod promocyjny"
-								/>
-							</div>
-							{% csrf_token %}
-							<button class="btn btn-primary">Doładuj</button>
-						</form>
-						{% else %}
-						<h1>Nie znaleziono strony</h1>
+							<h2 class="card-title">Doładuj porfel za pomocą kodu promocyjnego</h2>
+							<h4>Wpisz kod promocyjny</h4>
+							<form action="{% url 'accounts:wallet-payment-finish' payment='promotion_code'%}" method="post">
+								{% csrf_token %}
+								{{form}}
+								<button class="btn btn-success" type="submit">Doładuj</button>
+							</form>
 						{% endif %}
 					</div>
 				</div>

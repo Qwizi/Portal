@@ -18,3 +18,12 @@ class SMSNumberForm(forms.Form):
         super(SMSNumberForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+
+class PromotionCodeForm(forms.Form):
+    code = forms.CharField(max_length=8, label="Kod")
+
+    def __init__(self, *args, **kwargs):
+        super(PromotionCodeForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
