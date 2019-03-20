@@ -89,16 +89,16 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost'
     },
-    'jb_db': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jailbreak',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost'
-    }
+    # 'jb_db': {
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'jailbreak',
+        # 'USER': 'root',
+        # 'PASSWORD': '',
+        # 'HOST': 'localhost'
+    # }
 }
 
-DATABASE_ROUTERS = ['jailbreak.router.JailBreakRouter', ]
+# DATABASE_ROUTERS = ['jailbreak.router.JailBreakRouter', ]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -137,7 +137,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
-    "C:\\Users\\Adrian\\PycharmProjects\\portal\\\portal\\public\\static",
+    "C:\\Users\\Adrian\\PycharmProjects\\portal-project\\\portal\\public\\static",
 ]
 # LiveServer.pl Server Status Api
 LS_API_SMS_URL = 'https://rec.liveserver.pl/api?channel=sms&return_method=http'

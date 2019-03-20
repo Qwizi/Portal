@@ -6,15 +6,16 @@ from django_unixdatetimefield import UnixDateTimeField
 from decimal import *
 
 class Payment(models.Model):
+    name = models.CharField(max_length=50)
+    tag = models.CharField(max_length=36)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        pass
+        return self.name
 
     class Meta:
-        db_table = ''
-        managed = True
-        verbose_name = 'Sklep -'
-        verbose_name_plural = 'Payments'
+        verbose_name = 'Sklep - Płatność'
+        verbose_name_plural = 'Sklep - Płatnosci'
 
 class Premium(models.Model):
     nick = models.CharField(max_length=512, null=False)

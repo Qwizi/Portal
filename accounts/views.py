@@ -5,7 +5,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from shop.models import *
-from accounts.models import User, PaymentHistory, Payment
+from accounts.models import User, PaymentHistory
 from .forms import WalletTransfer, SMSNumberForm
 from digg_paginator import DiggPaginator
 import requests
@@ -19,6 +19,16 @@ class AccountIndex(generic.TemplateView):
 # Strona głowna portfela
 class WalletIndex(generic.TemplateView):
     template_name = 'accounts/wallet/index.html'
+
+    def get_payment_list(self):
+        return Payment.objects.order_by('-is_active')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'payment_list': self.get_payment_list(),
+        })
+        return context
 
 # Wybieranie wartości doładowania portfela przez smsa
 class WalletPayment(generic.ListView):

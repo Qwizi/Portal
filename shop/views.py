@@ -13,9 +13,8 @@ from servers.models import Server
 from accounts.models import PaymentHistory, MyGroup, User
 from .forms import ShopForm, ShopAddForm
 from .models import Service, Premium, PremiumCache, Bonus, PromotionServicePrice
+
 # Lista usług
-
-
 class Index(generic.ListView):
     queryset = Service.objects.all()
     context_object_name = 'data_with_paginate'

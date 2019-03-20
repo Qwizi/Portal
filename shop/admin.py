@@ -1,11 +1,13 @@
 from django.contrib import admin
-from .models import *
+from shop import models
 
-admin.site.register(Premium)
-admin.site.register(PremiumCache)
-admin.site.register(Price)
-admin.site.register(Bonus)
-admin.site.register(SMSNumber)
-admin.site.register(Service)
-admin.site.register(PromotionCode)
-admin.site.register(PromotionServicePrice)
+
+admin.site.register(models.Payment)
+admin.site.register(models.Premium)
+admin.site.register(models.PremiumCache)
+admin.site.register(models.Price)
+admin.site.register(models.Bonus)
+admin.site.register(models.SMSNumber)
+admin.site.register(models.Service)
+admin.site.register(models.PromotionCode)
+admin.site.register(models.PromotionServicePrice)
