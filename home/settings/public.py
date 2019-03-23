@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'api',
-    'jailbreak',
     'user_centrum',
     'profiles'
 ]
@@ -89,19 +88,22 @@ DATABASES = {
         'NAME': 'sharkser_portal',
         'USER': 'sharkser_portal',
         'PASSWORD': 'geOkY^dU50nXjbfi',
-        'HOST': '54.37.233.204'
+        'HOST': '54.37.233.204',
+        'OPTIONS': {
+        "init_command": "SET foreign_key_checks = 0;",
+        },
     },
-    'jb_db': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sharkser_jb',
-        'USER': 'sharkser_jb',
-        'PASSWORD': 'geOkY^dU50nXjbfi',
-        'HOST': '54.37.233.204'
-    }
+    #'jb_db': {
+    #    'ENGINE': 'django.db.backends.mysql',
+    #    'NAME': 'sharkser_jb',
+    #    'USER': 'sharkser_jb',
+    #    'PASSWORD': 'geOkY^dU50nXjbfi',
+    #    'HOST': '54.37.233.204'
+    #}
 }
 
 
-DATABASE_ROUTERS = ['jailbreak.router.JailBreakRouter', ]
+#DATABASE_ROUTERS = ['jailbreak.router.JailBreakRouter', ]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
