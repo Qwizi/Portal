@@ -4,4 +4,4 @@ deploy_production:
   only:
     - master
   script:
-    - git ftp init -v --syncroot ./ --user $USERNAME --passwd $PASSWORD $HOST
+    - git ftp push -v --syncroot ./ --user $USERNAME --passwd $PASSWORD $HOST
