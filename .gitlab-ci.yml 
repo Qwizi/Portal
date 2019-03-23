@@ -1,0 +1,7 @@
+deploy_production:
+  image: dotsunited/git-ftp
+  stage: deploy
+  only:
+    - master
+  script:
+    - git init push -v --syncroot ./ --user $USERNAME --passwd $PASSWORD $HOST
