@@ -22,13 +22,13 @@ class GroupManager(models.Manager):
 
 class MyGroup(models.Model):
     name = models.CharField(_('name'), max_length=80, unique=True)
-    permissions = models.ManyToManyField(
-        Permission,
-        verbose_name=_('permissions'),
-        blank=True,
-    )
     login_format = models.CharField(max_length=512, default="{username}")
-
+    usertitle = models.CharField(max_length=50, default="Użytkownik")
+    disporder = models.IntegerField(default=0)
+    showteam = models.BooleanField(default=False)
+    permissions = models.ManyToManyField(Permission, verbose_name=_('permissions'), blank=True)
+    
+    
     objects = GroupManager()
 
     class Meta:
@@ -97,7 +97,7 @@ class User(models.Model):
             'granted to each of their groups.'
         ),
         related_name="user_set",
-        related_query_name="user",
+        related_query_name="User",
     )
     user_permissions = models.ManyToManyField(
         Permission,
@@ -105,7 +105,7 @@ class User(models.Model):
         blank=True,
         help_text=_('Specific permissions for this user.'),
         related_name="user_set",
-        related_query_name="user",
+        related_query_name="User",
     )
 
     class Meta: 
@@ -229,15 +229,3 @@ class PaymentHistory(models.Model):
     class Meta:
         verbose_name = 'PaymentHistory'
         verbose_name_plural = 'PaymentHistorys'
-
-class Payment(models.Model):
-    tag = models.CharField(max_length=30)
-    name = models.CharField(max_length=50)
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Platnosc'
-        verbose_name_plural = 'Platnosci'

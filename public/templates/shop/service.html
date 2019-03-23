@@ -3,46 +3,6 @@
 {% comment %}
 <section>
 	<div class="container inner">
-		<div class="row post" style="padding-top: 70px;">
-			<div class="col-md-12">
-				<h1 class="text-center">
-					{{ service.bonus.name }} - {{ service.days }} dni - wybierz serwer
-				</h1>
-			</div>
-			{% for server in service.bonus.servers.all %}
-			<div class="col-md-4 mx-auto">
-				<div class="card dark-bg">
-					<img class="card-img-top" src="{{ server.banner.url }}" alt="Card image cap" />
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-12">
-								<a
-									href="{% url 'shop:finish' service_tag=service.bonus.tag service_days=service.days server_tag=server.tag%}"
-									class="btn btn-success d-block justify-content-center"
-									>Wybieram</a
-								>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			{% endfor %}
-		</div>
-		<div class="row" style="padding-top: 20px;">
-			<div class="col-md-12">
-				<div class="card light-bg">
-					<div class="card-header blue-bg">Lista bonusów</div>
-					<div class="card-body">
-						<p>{{ service.bonus.description_full | safe }}</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-{% endcomment %}
-<section>
-	<div class="container inner">
 		<div class="row">
 			<div class="col-md-8">
 				{% if messages %} {% include "messages.html" %} {% endif %}
@@ -79,6 +39,63 @@
 				</div>
 			</div>
 			<div class="col-md-4">
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						<ul class="nav nav-pills card-header-pills">
+							<li class="nav-item">
+								{% url 'shop:service ' as url %}
+								<a href="{{ url }}"{% if request.path == url %} class="nav-link active" {% else %} class="nav-link"{% endif %}>Lista bonusów</a>
+							</li>
+						</ul>
+					</div>
+					<div class="card-body text-center">
+						<h1 class="card-title">Lista bonusów</h1>
+						{{ service.bonus.description_full | safe }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endcomment %}
+<section>
+	<div class="container inner">
+		<div class="d-flex flex-wrap justify-content-center no-gutter">
+			<div class="col-sm-8 p2">
+				{% if messages %} {% include "messages.html" %} {% endif %}
+				<div class="card light-bg">
+					<div class="card-header blue-bg">
+						<ul class="nav nav-pills card-header-pills">
+							<li class="nav-item">
+								{% url 'shop:service ' as url %}
+								<a href="{{ url }}"{% if request.path == url %} class="nav-link active" {% else %} class="nav-link"{% endif %}>Serwer</a>
+							</li>
+						</ul>
+					</div>
+					<div class="card-body text-center">
+						<h1 class="card-title">Wybierz serwer</h1>
+						{% for server in service.bonus.servers.all %}
+						<div class="col-md-4 mx-auto">
+							<div class="card dark-bg">
+								<img class="card-img-top" src="{{ server.banner.url }}" alt="Card image cap" />
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-12">
+											<a
+												href="{% url 'shop:finish' service_tag=service.bonus.tag service_days=service.days server_tag=server.tag%}"
+												class="btn btn-success d-block justify-content-center"
+												>Wybieram</a
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 p2">
 				<div class="card light-bg">
 					<div class="card-header blue-bg">
 						<ul class="nav nav-pills card-header-pills">

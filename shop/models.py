@@ -5,6 +5,17 @@ from django.conf import settings
 from django_unixdatetimefield import UnixDateTimeField
 from decimal import *
 
+class Payment(models.Model):
+    name = models.CharField(max_length=50)
+    tag = models.CharField(max_length=36)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Sklep - Płatność'
+        verbose_name_plural = 'Sklep - Płatnosci'
 
 class Premium(models.Model):
     nick = models.CharField(max_length=512, null=False)
@@ -16,8 +27,8 @@ class Premium(models.Model):
 
     class Meta:
         db_table = 'shop_premium'
-        verbose_name = 'Premium'
-        verbose_name_plural = 'Premiums'
+        verbose_name = 'Sklep - Premka'
+        verbose_name_plural = 'Sklep - Premki'
 
 
 class Price(models.Model):
@@ -32,8 +43,8 @@ class Price(models.Model):
 
     class Meta:
         db_table = 'shop_price'
-        verbose_name = 'Cena'
-        verbose_name_plural = 'Ceny'
+        verbose_name = 'Sklep - Cena'
+        verbose_name_plural = 'Sklep - Ceny'
 
 
 class SMSNumber(models.Model):
@@ -49,8 +60,8 @@ class SMSNumber(models.Model):
 
     class Meta:
         db_table = 'shop_sms_numbers'
-        verbose_name = 'Numer SMS'
-        verbose_name_plural = 'Numery SMS'
+        verbose_name = 'Sklep - Numer SMS'
+        verbose_name_plural = 'Sklep - Numery SMS'
 
 
 class Bonus(models.Model):
@@ -63,8 +74,8 @@ class Bonus(models.Model):
 
     class Meta:
         db_table = 'shop_bonus'
-        verbose_name = 'Bonus'
-        verbose_name_plural = 'Bonusy'
+        verbose_name = 'Sklep - Bonus'
+        verbose_name_plural = 'Sklep - Bonusy'
 
     def __str__(self):
         return "%s | %s | %s " % (self.name, self.tag, self.flags)
@@ -82,8 +93,8 @@ class Service(models.Model):
 
     class Meta:
         db_table = 'shop_service'
-        verbose_name = 'Usluga'
-        verbose_name_plural = 'Uslugi'
+        verbose_name = 'Sklep - Usluga'
+        verbose_name_plural = 'Sklep - Uslugi'
 
     def __str__(self):
         return "%s | %d | %d" % (self.bonus.name, self.days, self.price.value)
@@ -105,8 +116,8 @@ class PremiumCache(models.Model):
 
     class Meta:
         db_table = 'shop_premium_cache'
-        verbose_name = 'Premium Cache'
-        verbose_name_plural = 'Premiums Cache'
+        verbose_name = 'Sklep - Premka Cache'
+        verbose_name_plural = 'Sklep - Premki Cache'
 
 
 class PromotionCode(models.Model):
@@ -117,15 +128,15 @@ class PromotionCode(models.Model):
         default=0)
     read_count = models.IntegerField(default=0)
     multi = models.BooleanField(default=False)
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     def __str__(self):
         return "%s | %s" % (self.code, self.value)
 
     class Meta:
         db_table = 'shop_promotion_code'
-        verbose_name = 'Kod promocyjny'
-        verbose_name_plural = 'Kody promocyjne'
+        verbose_name = 'Sklep - Kod promocyjny'
+        verbose_name_plural = 'Sklep - Kody promocyjne'
 
 class PromotionServicePrice(models.Model):
 

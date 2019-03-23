@@ -16,4 +16,5 @@ urlpatterns = [
     path('rules/<int:pk>/edit',permission_required('mainpage.change_Rule') (views.RuleUpdate.as_view()), name='rules-update'),
     path('rules/<int:pk>/delete',permission_required('mainpage.delete_Rule')(views.RuleDelete.as_view()), name='rules-delete'),
     path('faq/',cache_page(60 * 15) (views.FAQList.as_view()), name='faq-list'),
+    path('team/', views.ShowTeam.as_view(), name='team')
 ]

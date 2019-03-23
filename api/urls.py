@@ -9,6 +9,5 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('jailbreak/', include('jailbreak.urls')),
     path('api-auth/', include('rest_framework.urls'))
 ]

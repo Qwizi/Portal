@@ -1,12 +1,13 @@
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, get_object_or_404
 from django.conf import settings
 from django.views import generic
 from django.views.generic.edit import FormMixin
 from django.contrib import messages
+from django.http import Http404
 
 from shop.models import *
-from accounts.models import User, PaymentHistory, Payment
-from .forms import WalletTransfer, SMSNumberForm
+from accounts.models import User, PaymentHistory
+from .forms import WalletTransfer, SMSNumberForm, PromotionCodeForm, ReturnCodeForm
 from digg_paginator import DiggPaginator
 import requests
 import urllib.parse
@@ -20,7 +21,18 @@ class AccountIndex(generic.TemplateView):
 class WalletIndex(generic.TemplateView):
     template_name = 'accounts/wallet/index.html'
 
+    def get_payment_list(self):
+        return Payment.objects.order_by('-is_active')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'payment_list': self.get_payment_list(),
+        })
+        return context
+
 # Wybieranie wartości doładowania portfela przez smsa
+""" 
 class WalletPayment(generic.ListView):
     model = SMSNumber
     context_object_name = 'price_list'
@@ -32,44 +44,54 @@ class WalletPayment(generic.ListView):
             'payment': self.kwargs['payment'],
             'form': SMSNumberForm(self.request.POST)
         })
-        return context
-
-""" class WalletPayment(generic.TemplateView):
+        return context 
+"""
+class WalletPayment(generic.TemplateView):
     template_name = 'accounts/wallet/payment.html'
 
-    def get_payment_class(self):
-        payment = self.kwargs['payment']
-        #payment_classname = "{}Payment".format(payment.upper())()
-        PaymentClass = SMSPayment()
-        return PaymentClass
 
-    def get_payments(self):
-        PaymentClass = self.get_payment_class()
-        return PaymentClass.get_payments()
+    def get_payment_form(self):
+        form = None
+        if self.kwargs['payment'] == 'sms':
+            form = SMSNumberForm()
+        elif self.kwargs['payment'] == 'promotion_code':
+            form = PromotionCodeForm()
+        else:
+            form = None
 
-    def get_context_data(self, *args, **kwargs):
+        if form is None:
+            raise Http404
+
+        return form
+
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'payments': self.get_payments()
+            'payment': self.kwargs['payment'],
+            'form': self.get_payment_form()
         })
-        return context """
+        return context 
 
 # Sprawdzanie kodu
-class WalletAdd(generic.TemplateView):
-    template_name = 'accounts/wallet/add.html'
+class WalletPaymentFinish(generic.TemplateView):
+    template_name = 'accounts/wallet/finish.html'
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         value = self.request.POST.get('value')
         context.update({
-            'sms': SMSNumber.objects.get(value=value)
+            'sms': SMSNumber.objects.get(pk=value)
         })
         return self.render_to_response(context=context)
+
+    def get_return_code_form(self):
+        return ReturnCodeForm()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             'payment': self.kwargs['payment'],
+            'form': self.get_return_code_form()
         })
         return context
 

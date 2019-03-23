@@ -3,10 +3,11 @@ from django.views import generic
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 
 from servers.models import Server
 from .models import Rule, FAQ
-from accounts.models import User
+from accounts.models import MyGroup, User
 from shop.models import Service
 from steamauth import RedirectToSteamSignIn, GetSteamID64
 from django.shortcuts import render_to_response
@@ -100,5 +101,24 @@ class RuleDelete(SuccessMessageMixin, generic.DeleteView):
 
 class FAQList(generic.ListView):
     model = FAQ
-    context_object_name = 'FAQ_list'
-    template_name = 'mainpage/FAQ/index.html'
+    context_object_name = 'faq_list'
+    template_name = 'mainpage/faq/index.html'
+
+class ShowTeam(generic.TemplateView):
+    template_name = 'mainpage/team/index.html'
+
+    def get_groups(self):
+        groups = MyGroup.objects.filter(showteam=True).order_by('disporder')
+        return groups
+
+    def get_user_from_group(self, groups):
+        users = User.objects.filter(groups=groups)
+        return users
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'group_list': self.get_groups(),
+            #'user_list': self.get_user_from_group(self.get_groups)
+        })
+        return context

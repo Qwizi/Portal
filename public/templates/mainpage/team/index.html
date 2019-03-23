@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block title %}Administracja{% endblock title %} {% load login_format %} {% load staticfiles %}
+{% block content %}
+<section>
+	<div class="container inner">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card dark-bg">
+					<div class="card-header blue-bg text-center"><h3>Administracja</h3></div>
+					<div class="card-body">
+						{% for group in group_list %}
+						<div class="card light-bg">
+							{% if group.user_set.all %}
+							<div class="card-header bg-dark text-center">{{ group.name }}</div>
+							<div class="card-body">
+								{% for user_team in group.user_set.all %}
+								<div class="flex-row text-center">
+									<div class="p2">
+										<a href="{% url 'profiles:index' pk=user_team.pk %}">
+											{% if user_team.avatar_medium == None %}
+												<img src="{% static 'default_avatar.png' %}" class="rounded img-fluid" alt="Avatar użytkownika {{user_team.username}}">
+											{% else %}
+												<img src="{{user_team.avatar_medium}}" class="rounded img-fluid" alt="Avatar użytkownika {{user_team.avatar_username}}">
+											{% endif %}
+										</a>
+									</div>
+									<div class="w-100"></div>
+									<div class="p2">{{ user_team|login_format }}</div>
+								</div>
+								{% endfor %}
+							</div>
+							{% endif %}
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock content %}
