@@ -13,7 +13,7 @@ urlpatterns = [
     path('account/', include('accounts.urls', namespace='accounts')),
     path('shop/', include('shop.urls', namespace='shop')),
     path('centrum/', include('user_centrum.urls', namespace='centrum')),
-    path('profile/', include('profiles.urls', namespace='profile'))
+    path('profiles/', include('profiles.urls', namespace='profile'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG is True:

@@ -87,7 +87,10 @@ DATABASES = {
         'NAME': 'portal',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
+        'OPTIONS': {
+        "init_command": "SET foreign_key_checks = 0;",
+        },
     },
     # 'jb_db': {
         # 'ENGINE': 'django.db.backends.mysql',

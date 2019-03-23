@@ -11,6 +11,6 @@ urlpatterns = [
     path('wallet/payment/<str:payment>/finish', permission_required('accounts.add_wallet')(views.WalletPaymentFinish.as_view()), name='wallet-payment-finish'),
     path('wallet/payment/<str:payment>/success', views.WalletSuccess.as_view(), name='wallet-success'),
     path('wallet/transfer', permission_required('accounts.transfer_wallet')(views.WalletTransferMoney.as_view()), name='wallet-transfer'),
-    path('wallet/historia',permission_required('accounts.view_wallet')(views.WalletPaymentHistory.as_view()),name='wallet-payment-history'),
+    path('wallet/history',permission_required('accounts.view_wallet')(views.WalletPaymentHistory.as_view()),name='wallet-payment-history'),
     path('my-shopping', permission_required('accounts.view_myshopping')(views.MyShopping.as_view()), name='myshopping'),
 ]

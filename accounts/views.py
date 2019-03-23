@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, get_object_or_404
 from django.conf import settings
 from django.views import generic
 from django.views.generic.edit import FormMixin
@@ -7,7 +7,7 @@ from django.http import Http404
 
 from shop.models import *
 from accounts.models import User, PaymentHistory
-from .forms import WalletTransfer, SMSNumberForm, PromotionCodeForm
+from .forms import WalletTransfer, SMSNumberForm, PromotionCodeForm, ReturnCodeForm
 from digg_paginator import DiggPaginator
 import requests
 import urllib.parse
@@ -74,20 +74,24 @@ class WalletPayment(generic.TemplateView):
 
 # Sprawdzanie kodu
 class WalletPaymentFinish(generic.TemplateView):
-    template_name = 'accounts/wallet/add.html'
+    template_name = 'accounts/wallet/finish.html'
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         value = self.request.POST.get('value')
         context.update({
-            'sms': SMSNumber.objects.get(value=value)
+            'sms': SMSNumber.objects.get(pk=value)
         })
         return self.render_to_response(context=context)
+
+    def get_return_code_form(self):
+        return ReturnCodeForm()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             'payment': self.kwargs['payment'],
+            'form': self.get_return_code_form()
         })
         return context
 

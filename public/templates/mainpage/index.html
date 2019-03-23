@@ -15,7 +15,7 @@
         <div class="row">
             <div class="pricing card-deck flex-column flex-md-row mb-3 mx-auto">
                 {% for service in bonus_list %}
-                <div class="card light-bg {% if service.days == 30 and service.bonus.tag == 'shark' %} popular {% endif %}card-pricing text-center px-3 mb-4" >
+                <div class="card light-bg {% if service.days == 30 and service.bonus.tag == 'shark' %} popular {% endif %}card-pricing text-center px-3 mb-4 shop-card-border">
                         <span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm"
                             >{{ service.bonus.name }}</span
                         >
@@ -23,13 +23,13 @@
                             <h2 class="h2 font-weight-normal text-primary text-center mb-0" data-pricing-value="15">
                                     <span class="price">
                                     {% if service.promotion_price != 0.0 %}
-                                        <del>{{ service.price.value }} zł</del>
+                                        <del style="font-size: 20px">{{ service.price.value }} zł</del>
                                         {{ service.promotion_price }} zł
                                     {% else %}
                                         {{ service.price.value }} zł
                                     {% endif %}
                                     </span>
-                                <span class="h6 text-muted ml-2">/ na {{service.days}} dni</span>
+                                <span class="h6 text-muted ml-2">/ {{service.days}} dni</span>
                             </h2>
                         </div>
                         <div class="card-body pt-0">

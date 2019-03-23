@@ -15,7 +15,7 @@ from .forms import ShopForm, ShopAddForm
 from .models import Service, Premium, PremiumCache, Bonus, PromotionServicePrice
 
 # Lista usług
-class Index(generic.ListView):
+class ShopIndex(generic.ListView):
     queryset = Service.objects.all()
     context_object_name = 'data_with_paginate'
     template_name = 'shop/index.html'
@@ -32,7 +32,7 @@ class Index(generic.ListView):
 # Lista serwerów na których można zakupić uslugę
 
 
-class ServiceDetail(generic.DetailView):
+class ShopServiceDetail(generic.DetailView):
     context_object_name = 'service'
     template_name = 'shop/service.html'
 
@@ -43,7 +43,7 @@ class ServiceDetail(generic.DetailView):
         )
 
 # Finalizacja zakupu
-class ServiceFinish(generic.TemplateView):
+class ShopServiceFinish(generic.TemplateView):
     template_name = 'shop/finish.html'
 
     def post(self, request, *args, **kwargs):
@@ -193,7 +193,7 @@ class ServiceFinish(generic.TemplateView):
 # Zadanie cron usuwające przedawnione usługi
 
 
-class Cron(generic.View):
+class ShopCron(generic.View):
     def get(self, request, *args, **kwargs):
         try:
             p_cache = PremiumCache.objects.filter(

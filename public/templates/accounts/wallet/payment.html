@@ -67,7 +67,7 @@
 						{% elif payment == 'promotion_code' %}
 							<h2 class="card-title">Doładuj porfel za pomocą kodu promocyjnego</h2>
 							<h4>Wpisz kod promocyjny</h4>
-							<form action="{% url 'accounts:wallet-payment-finish' payment='promotion_code'%}" method="post">
+							<form action="{% url 'accounts:wallet-success' payment='promotion_code'%}" method="post">
 								{% csrf_token %}
 								{{form}}
 								<button class="btn btn-success" type="submit">Doładuj</button>

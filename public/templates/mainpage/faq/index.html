@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}FAQ{% endblock title %}
 {% block content %}
+{% comment %}
 <section>
     <div class="container inner">
         <h1 class="text-center">FAQ</h1>
@@ -11,6 +12,35 @@
                         <div class="card-header blue-bg"><h3>{{ faq.question }}</h3></div>
                         <div class="card-body"><p>{{ faq.answer }}</p></div>
                     </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>    
+</section>
+{% endcomment %}
+<section>
+    <div class="container inner">
+        <h1 class="text-center">FAQ</h1>
+        <div class="row">
+            <div class="col-md-12">
+                {% for faq in faq_list %}
+                <div id="accordion">
+                    <div class="card light-bg">
+                      <div class="card-header blue-bg" id="heading-{{faq.pk}}">
+                        <h5 class="mb-0">
+                          <button class="btn text-white collapsed" data-toggle="collapse" data-target="#collapse-{{faq.pk}}" aria-expanded="true" aria-controls="collapse-{{faq.pk}}">
+                            {{ faq.question }}
+                          </button>
+                        </h5>
+                      </div>
+                  
+                      <div id="collapse-{{faq.pk}}" class="collapse" aria-labelledby="heading-{{faq.pk}}" data-parent="#accordion">
+                        <div class="card-body">
+                         {{ faq.answer }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 {% endfor %}
             </div>
         </div>

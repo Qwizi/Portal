@@ -5,6 +5,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="robots" content="index, follow">
+		<meta name="theme-color" content="#242f3a">
 		<link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
 		<link
 			rel="stylesheet"
@@ -23,9 +25,8 @@
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 		<link rel="stylesheet" href="{% static 'mainpage/css/defaultdark.min.css' %}" />
 		{% block styles %}{% endblock%}
-		<title>{% block title %}{% endblock %} - SharkServers.pl</title>
+		<title>SharkServers.pl - {% block title %}{% endblock %}</title>
 	</head>
-
 	<body>
 		<main>
 			<header>
@@ -65,44 +66,54 @@
 						</ul>
 
 						{% if not user.is_authenticated %}
-						<a href="{% url 'mainpage:login' %}" class="navbar-text text-light"
-							><img
-								src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png"
-								alt="Steam login button"
-						/></a>
+							<a href="{% url 'mainpage:login' %}" class="navbar-text text-light">
+								<img
+									src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png"
+									alt="Steam login button"
+								/>
+							</a>
 						{% else %}
-						<a href="{% url 'profiles:index' pk=user.pk %}" class="nav-link"><img class="img-fluid rounded" src="{{ user.avatar }}"/></a>
-						<span class="nav-link badge bg-dark" 
-						{% if user.display_group.pk == 6 %}
-							data-container="body" data-toggle="popover" data-placement="bottom" data-content="Pozostało 7 dni do końca Sharka"
-						{% endif %} >
-							{{ user.display_group|groupname_format }}
-						</span>
-						<a href="{% url 'accounts:wallet-index' %}" class="nav-link"
-							><span class="badge bg-primary">{{ user.get_cash }}</span></a
-						>
-						<a
-							href="#"
-							role="button"
-							class="btn btn-secondary dropdown-toggle btn-sm"
-							data-toggle="dropdown"
-							aria-haspopup="true"
-							aria-expanded="false"
-						>
-							Opcje
-						</a>
-
-						<div class="dropdown-menu dropdown-menu-right">
-							<a class="dropdown-item" href="{% url 'accounts:index' %}">Konto</a>
-							<a class="dropdown-item" href="{% url 'profiles:index' pk=user.pk %}">Profil</a>
-							<a class="dropdown-item" href="{% url 'accounts:wallet-index' %}">Portfel</a>
-							<div class="dropdown-divider"></div>
-							{% if user.is_staff %}
-							<a class="dropdown-item" href="/admin/">ACP</a>
-							{% endif %}
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{%url 'mainpage:logout' %}">Wyloguj się</a>
-						</div>
+							<a href="{% url 'profiles:index' pk=user.pk %}" class="nav-link"><img class="img-fluid rounded" src="{{ user.avatar }}"/></a>
+							<div class="dropdown show">
+								<a
+									href="#"
+									role="button"
+									id="dropdownMenuLink"
+									class="dropdown-toggle mr-md-2"
+									data-toggle="dropdown"
+									aria-haspopup="true"
+									aria-expanded="false"
+								>
+									{{user.username}}
+								</a>
+	
+								<div class="dropdown-menu dropdown-menu2" aria-labelledby="dropdownMenuLink">
+									<a class="dropdown-item" href="{% url 'accounts:index' %}">Konto</a>
+									<a class="dropdown-item" href="{% url 'profiles:index' pk=user.pk %}">Profil</a>
+									<a class="dropdown-item" href="{% url 'accounts:wallet-index' %}">
+										Portfel <span class="badge bg-success" style="color: #fff">{{ user.get_cash }}</span>
+									</a>
+									{% if user.is_staff %}
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="/admin/">ACP</a>
+									{% endif %}
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="{%url 'mainpage:logout' %}">Wyloguj się</a>
+								</div>
+							</div>
+							{% comment %}
+								<div class="profile-rank nav-link"
+								{% if user.display_group.pk == 6 %}
+									data-container="body" data-toggle="popover" data-placement="bottom" data-content="Pozostało 7 dni do końca Sharka"
+								{% endif %}>
+									<div class="profile-rank-circle"></div>
+									<span>{{ user.display_group|groupname_format }}</span>
+								</div>
+								<a href="{% url 'accounts:wallet-index' %}" class="nav-link">
+									<span class="badge bg-primary">{{ user.get_cash }}</span>
+								</a>
+							{% endcomment %}
+							
 						{% endif %}
 					</div>
 				</nav>
@@ -116,27 +127,29 @@
 				<div class="row">
 					<div class="col-sm-3">
 						<h5>Nawigacja</h5>
-						<ul>
-							<li><a href="{% url 'mainpage:home' %}">Strona główna</a></li>
-							<li><a href="/#shark">Ranga Shark</a></li>
-							<li><a href="/#serwery">Serwery</a></li>
-						</ul>
+						<nav>
+							<ul>
+								<li><a href="{% url 'mainpage:home' %}">Strona główna</a></li>
+								<li><a href="#">Forum</a></li>
+								<li><a href="/#serwery">Serwery</a></li>
+								<li><a href="{% url 'user_centrum:index' %}">Centrum użytkownika</a></li>
+								<li><a href="{% url 'shop:index' %}">Sklep</a></li>
+							</ul>
+						</nav>
 					</div>
 					<div class="col-sm-3">
 						<h5>Załoga</h5>
 						<ul>
-							<li><a href="#">Poradniki</a></li>
-							<li><a href="#">Kontakt z ekipą</a></li>
-							<li><a href="#">Reviews</a></li>
+							<li><a href="#">123</a></li>
+							<li><a href="#">321</a></li>
+							<li><a href="#">333</a></li>
 						</ul>
 					</div>
 					<div class="col-sm-3">
 						<h5>Pomoc</h5>
 						<ul>
 							<li><a href="{% url 'mainpage:faq-list' %}">FAQ</a></li>
-							<li><a href="#">Poradniki</a></li>
 							<li><a href="{% url 'mainpage:rules' %}">Regulaminy</a></li>
-							<li><a href="#">HelpDesk</a></li>
 						</ul>
 					</div>
 					<div class="col-sm-3 info">
@@ -161,27 +174,25 @@
 					</div>
 				</div>
 			</div>
+			<script src="{% static 'mainpage/js/sceditor.min.js' %}"></script>
+			<script src="{% static 'mainpage/js/formats/bbcode.js' %}"></script>
+			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+			<script
+				src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+				integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+				crossorigin="anonymous"
+			></script>
+			<script
+				src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+				integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+				crossorigin="an`onymous"
+			></script>
+			<script>
+				$(function () {
+					$('[data-toggle="popover"]').popover()
+				})
+			</script>
+			{% block js %} {% endblock %}
 		</footer>
-		{% comment %}
-		{% endcomment %}
-		<script src="{% static 'mainpage/js/sceditor.min.js' %}"></script>
-		<script src="{% static 'mainpage/js/formats/bbcode.js' %}"></script>
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-			integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-			crossorigin="anonymous"
-		></script>
-		<script
-			src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-			integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-			crossorigin="an`onymous"
-		></script>
-		<script>
-			$(function () {
-				$('[data-toggle="popover"]').popover()
-			})
-		</script>
-		{% block js %} {% endblock %}
 	</body>
 </html>
